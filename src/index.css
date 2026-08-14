@@ -10,7 +10,13 @@
   --ink-dim: rgba(242,238,233,0.6);
 }
 
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
+  max-width: 100vw;
   background:
     radial-gradient(ellipse 60% 55% at 62% 42%, rgba(200,30,44,0.22) 0%, transparent 62%),
     radial-gradient(ellipse 70% 60% at 50% 100%, rgba(200,30,44,0.10) 0%, transparent 60%),

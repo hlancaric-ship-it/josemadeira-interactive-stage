@@ -16,7 +16,6 @@ const LINKS: NavLink[] = [
   { key: 'collab', panel: 'panel-collab' },
   { key: 'streaming', panel: 'panel-streaming' },
   { key: 'music', panel: 'panel-music' },
-  { key: 'feed', panel: 'panel-feed' },
   { key: 'gallery', panel: 'panel-gallery' },
 ];
 

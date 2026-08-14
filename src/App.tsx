@@ -7,7 +7,6 @@ import { BackgroundPhotos } from './components/BackgroundPhotos';
 import { StageAtmosphere } from './components/StageAtmosphere';
 import { BottomSpectrum } from './components/BottomSpectrum';
 import { LiveBanner } from './components/LiveBanner';
-import { FeedSection } from './components/FeedSection';
 import { GallerySection } from './components/GallerySection';
 import { HorizontalStage } from './components/HorizontalStage';
 import { GlowLogo } from './components/GlowLogo';
@@ -302,7 +301,7 @@ const StreamingSection = () => {
         {t.streaming.title}
       </motion.h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-4 max-w-4xl">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:gap-4 max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -501,14 +500,13 @@ const MainStage = () => {
         <div id="panel-music" className="hstage-panel"><MusicSection /></div>
 
         {/* Live feed from Telegram */}
-        <div id="panel-feed" className="hstage-panel"><FeedSection /></div>
 
         {/* Photo/video gallery from IG/FB/TikTok, synced via Telegram */}
         <div id="panel-gallery" className="hstage-panel"><GallerySection /></div>
       </HorizontalStage>
 
       {/* Footer — pinned outside the horizontal scroll, not one of the panels */}
-      <footer className="relative lg:fixed lg:bottom-0 lg:left-0 lg:right-0 z-30 border-t border-white/5 py-12 lg:py-4 px-8 flex flex-col md:flex-row justify-between items-center text-[10px] mono tracking-[4px] text-gray-500 bg-black/40 backdrop-blur-md">
+      <footer className="relative lg:fixed lg:bottom-0 lg:left-0 lg:right-0 z-[45] border-t border-white/5 py-12 lg:py-4 px-8 flex flex-col md:flex-row justify-between items-center text-[10px] mono tracking-[4px] text-gray-500 bg-black/70 backdrop-blur-md">
         <div>{t.footer.rights}</div>
         <div className="flex gap-10 mt-6 md:mt-0">
           <a href="https://www.facebook.com/josemadeiraofficialnew/" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">FACEBOOK</a>
@@ -517,6 +515,7 @@ const MainStage = () => {
           <a href="https://www.youtube.com/@josemadeiraofficial" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">YOUTUBE</a>
           <a href="https://open.spotify.com/artist/0Gr1t69ZXhohsB8dwj4sLr" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">SPOTIFY</a>
           <a href="https://music.apple.com/cz/artist/josemadeira/1814103021" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">APPLE MUSIC</a>
+          <a href="https://www.studio54.cz/cs/dj/jose-madeira" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">STUDIO 54</a>
           <span className="text-white/30">{t.footer.location}</span>
         </div>
       </footer>

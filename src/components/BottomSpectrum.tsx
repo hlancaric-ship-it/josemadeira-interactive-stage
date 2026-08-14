@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useAudioStore } from '../store/audioStore';
 
-const BAR_COUNT_DESKTOP = 110;
-const BAR_COUNT_MOBILE = 56;
-const HEIGHT = 176; // px — reaches up to the floating player's top edge
+const BAR_COUNT_DESKTOP = 160;
+const BAR_COUNT_MOBILE = 80;
+const HEIGHT = 320; // px — tall, lively wall matching the track's energy
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -43,7 +43,7 @@ export const BottomSpectrum = () => {
     });
 
     let rafId: number;
-    const gapRatio = 0.42; // thin bars, generous gap — the "not blocky" look
+    const gapRatio = 0.3; // thin bars, generous gap — the "not blocky" look
 
     const draw = (t: number) => {
       if (document.hidden) {
@@ -62,7 +62,7 @@ export const BottomSpectrum = () => {
       for (let i = 0; i < BAR_COUNT; i++) {
         const bar = bars[i];
         const wobble = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.5 + 0.5;
-        const target = (0.05 + wobble * 0.55 * (0.3 + energy)) * bar.envelope;
+        const target = (0.06 + wobble * 0.8 * (0.45 + energy * 1.3)) * bar.envelope;
         bar.value = lerp(bar.value, target, reduced ? 1 : 0.16);
 
         const h = Math.max(2, bar.value * maxH);
@@ -103,7 +103,7 @@ export const BottomSpectrum = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none" style={{ height: HEIGHT, opacity: 0.55 }}>
+    <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none" style={{ height: HEIGHT, opacity: 0.72 }}>
       <canvas ref={canvasRef} className="w-full h-full" />
     </div>
   );
