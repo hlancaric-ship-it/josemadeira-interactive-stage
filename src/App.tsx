@@ -16,11 +16,10 @@ import { Preloader } from './components/Preloader';
 import { GlitchOverlay } from './components/GlitchOverlay';
 import { AudioControls } from './components/AudioControls';
 import { SoundCloudPlayer } from './components/SoundCloudPlayer';
-import { LangSwitch } from './components/LangSwitch';
+import { MainNav } from './components/MainNav';
 import { useLangStore } from './store/langStore';
 import { translations } from './i18n/translations';
 import joseAvatar from './assets/jose-avatar.jpg';
-import logoReal from './assets/logo-real.svg';
 
 const tourDates = [
   { id: '1', city: 'PRAGUE', venue: 'Studio 54', date: '16.08', country: 'CZ' },
@@ -238,25 +237,109 @@ const CollaboratorsSection = () => {
         {t.collab.title}
       </motion.h2>
 
-      <motion.a
-        href="https://www.housemagazine.cz/product-page/josemadeira-yan-lan-life-is-good"
-        target="_blank"
-        rel="noreferrer"
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5 }}
-        className="tour-card group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 px-5 py-6 sm:px-8 sm:py-8 lg:px-6 lg:py-5 bg-[#111] hover:bg-[#1a1010] border-l-4 border-transparent hover:border-[#C81E2C] transition-all overflow-hidden max-w-2xl"
+        className="max-w-3xl"
       >
-        <div>
-          <div className="mono text-xs tracking-[2px] text-[#C81E2C] mb-2">{t.collab.role}</div>
-          <div className="text-3xl sm:text-4xl lg:text-3xl font-bold tracking-[-0.5px] group-hover:text-[#C81E2C] transition-all duration-300">{t.collab.name}</div>
-          <div className="mono text-xs sm:text-sm text-gray-500 mt-2">{t.collab.releaseLabel}: <span className="text-white/70">{t.collab.releaseTitle}</span></div>
+        <div className="mono text-xs tracking-[2px] text-[#C81E2C] mb-3">{t.collab.role}: {t.collab.name}</div>
+
+        <div className="space-y-4 lg:space-y-3 text-gray-400 font-light leading-relaxed text-base sm:text-lg lg:text-sm mb-8 lg:mb-5">
+          <p>{t.collab.p1}</p>
+          <p>{t.collab.p2}</p>
         </div>
-        <div className="mono text-xs px-4 py-2.5 border border-[#C81E2C]/70 text-[#C81E2C] group-hover:bg-[#C81E2C] group-hover:text-white transition-all whitespace-nowrap">
+
+        <div className="h-px bg-white/10 mb-6 lg:mb-4" />
+
+        <div className="grid grid-cols-2 gap-6 max-w-md mb-8 lg:mb-5">
+          <div>
+            <div className="stat-label text-[10px] sm:text-[12px]">{t.collab.releaseLabel}</div>
+            <div className="stat-value text-base sm:text-lg lg:text-sm">{t.collab.releaseTitle}</div>
+          </div>
+          <div>
+            <div className="stat-label text-[10px] sm:text-[12px]">{t.collab.labelTag}</div>
+            <div className="stat-value text-base sm:text-lg lg:text-sm">{t.label.name}</div>
+          </div>
+        </div>
+
+        <a
+          href="https://www.housemagazine.cz/product-page/josemadeira-yan-lan-life-is-good"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block mono text-xs px-5 py-3 border border-[#C81E2C]/70 text-[#C81E2C] hover:bg-[#C81E2C] hover:text-white transition-all"
+        >
           {t.collab.cta} ↗
-        </div>
-      </motion.a>
+        </a>
+      </motion.div>
+    </section>
+  );
+};
+
+const StreamingSection = () => {
+  const { lang } = useLangStore();
+  const t = translations[lang];
+
+  return (
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.6 }}
+        className="mono text-xs sm:text-sm tracking-[4px] sm:tracking-[6px] text-[#C81E2C] mb-3 lg:mb-1"
+      >
+        {t.streaming.eyebrow}
+      </motion.div>
+      <motion.h2
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.7, delay: 0.05 }}
+        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-4"
+      >
+        {t.streaming.title}
+      </motion.h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-4 max-w-4xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5 }}
+          className="tour-card overflow-hidden p-1"
+        >
+          <iframe
+            title="Spotify"
+            style={{ borderRadius: 4 }}
+            src="https://open.spotify.com/embed/artist/0Gr1t69ZXhohsB8dwj4sLr?utm_source=generator&theme=0"
+            width="100%"
+            height="352"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.08 }}
+          className="tour-card overflow-hidden p-1"
+        >
+          <iframe
+            title="Apple Music"
+            allow="autoplay *; encrypted-media *;"
+            frameBorder="0"
+            height="352"
+            style={{ width: '100%', overflow: 'hidden', background: 'transparent' }}
+            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+            src="https://embed.music.apple.com/cz/artist/josemadeira/1814103021"
+          />
+        </motion.div>
+      </div>
     </section>
   );
 };
@@ -292,7 +375,7 @@ const MusicSection = () => {
       {visible.length === 0 ? (
         <div className="mono text-sm text-gray-500 tracking-[2px]">{t.player.connecting}</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 lg:gap-4">
           {visible.map((sound, i) => {
             const active = i === currentIndex;
             return (
@@ -303,7 +386,7 @@ const MusicSection = () => {
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 onClick={() => playIndex(i)}
-                className={`tour-card relative p-8 lg:p-4 flex flex-col justify-between aspect-square lg:aspect-[4/3] group text-left overflow-hidden transition-colors ${active ? 'border-[#C81E2C]' : ''}`}
+                className={`tour-card relative p-4 sm:p-8 lg:p-4 flex flex-col justify-between aspect-square lg:aspect-[4/3] group text-left overflow-hidden transition-colors ${active ? 'border-[#C81E2C]' : ''}`}
               >
                 {sound.artworkUrl && (
                   <div
@@ -319,16 +402,16 @@ const MusicSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/10" />
 
                 <div className="relative flex justify-between items-start">
-                  <div className="mono text-sm text-[#C81E2C] tracking-[2px]">
+                  <div className="mono text-[10px] sm:text-sm text-[#C81E2C] tracking-[2px]">
                     {active && isPlaying ? t.player.live : sound.genre || '—'}
                   </div>
-                  <div className={`w-10 h-10 rounded-full border border-white/20 flex items-center justify-center transition-opacity ${active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                    <span className="mono text-sm">{active && isPlaying ? '❚❚' : '▶'}</span>
+                  <div className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full border border-white/20 flex items-center justify-center transition-opacity ${active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                    <span className="mono text-xs sm:text-sm">{active && isPlaying ? '❚❚' : '▶'}</span>
                   </div>
                 </div>
                 <div className="relative">
-                  <div className="text-2xl font-bold tracking-tight mb-1 group-hover:text-[#C81E2C] transition-colors line-clamp-2">{sound.title}</div>
-                  <div className="mono text-sm text-gray-500 tracking-[1px]">JOSEMADEIRA</div>
+                  <div className="text-sm sm:text-2xl font-bold tracking-tight mb-1 group-hover:text-[#C81E2C] transition-colors line-clamp-2">{sound.title}</div>
+                  <div className="mono text-[10px] sm:text-sm text-gray-500 tracking-[1px]">JOSEMADEIRA</div>
                 </div>
               </motion.button>
             );
@@ -337,10 +420,6 @@ const MusicSection = () => {
       )}
     </section>
   );
-};
-
-const jumpTo = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'start' });
 };
 
 const MainStage = () => {
@@ -360,19 +439,7 @@ const MainStage = () => {
       <GlitchOverlay active={showGlitch} />
       <AudioControls />
 
-      {/* Top nav */}
-      <div className="fixed top-0 left-0 right-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-5 py-4 sm:px-8 sm:py-6 mono text-xs tracking-[3px] text-gray-500">
-        <div className="hidden lg:flex items-center gap-6">
-          <button onClick={() => jumpTo('panel-tour')} className="hover:text-[#C81E2C] transition-colors">{t.nav.tour}</button>
-          <button onClick={() => jumpTo('panel-about')} className="hover:text-[#C81E2C] transition-colors">{t.nav.about}</button>
-          <button onClick={() => jumpTo('panel-music')} className="hover:text-[#C81E2C] transition-colors">{t.nav.music}</button>
-        </div>
-        <img src={logoReal} alt="Jose Madeira" className="justify-self-center h-3 w-auto opacity-90" />
-        <div className="flex items-center justify-end gap-4 sm:gap-6">
-          <span className="hidden sm:inline">{t.topNav.residency}</span>
-          <LangSwitch />
-        </div>
-      </div>
+      <MainNav />
 
       <HorizontalStage>
         {/* Main hero title — asymmetric composition */}
@@ -426,6 +493,9 @@ const MainStage = () => {
 
         {/* Collaborators */}
         <div id="panel-collab" className="hstage-panel"><CollaboratorsSection /></div>
+
+        {/* Streaming widgets */}
+        <div id="panel-streaming" className="hstage-panel"><StreamingSection /></div>
 
         {/* Discography */}
         <div id="panel-music" className="hstage-panel"><MusicSection /></div>

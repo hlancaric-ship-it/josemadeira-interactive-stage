@@ -5,6 +5,13 @@ export interface Env {
   ALLOWED_CHAT_ID?: string;
 }
 
+interface Reply {
+  id: string;
+  name: string;
+  text: string;
+  timestamp: number;
+}
+
 interface FeedItem {
   id: string;
   text: string;
@@ -13,6 +20,7 @@ interface FeedItem {
   link?: string;
   platform?: 'instagram' | 'tiktok' | 'facebook' | null;
   fileId?: string;
+  replies?: Reply[];
 }
 
 interface LiveState {
@@ -154,6 +162,29 @@ export default {
       const raw = await env.FEED_KV.get('feed');
       const feed: FeedItem[] = raw ? JSON.parse(raw) : [];
       return json({ feed });
+    }
+
+    // Public replies — visitors can respond to a feed post
+    const replyMatch = url.pathname.match(/^\/api\/feed\/([\w-]+)\/reply$/);
+    if (replyMatch && request.method === 'POST') {
+      const itemId = replyMatch[1];
+      const body = await request.json<{ name?: string; text?: string }>().catch(() => ({}) as any);
+      const name = (body.name ?? 'Anonym').toString().trim().slice(0, 40) || 'Anonym';
+      const text = (body.text ?? '').toString().trim().slice(0, 300);
+      if (!text) {
+        return json({ error: 'Text required' }, 400);
+      }
+
+      const raw = await env.FEED_KV.get('feed');
+      const feed: FeedItem[] = raw ? JSON.parse(raw) : [];
+      const item = feed.find((f) => f.id === itemId);
+      if (!item) {
+        return json({ error: 'Not found' }, 404);
+      }
+      const reply: Reply = { id: crypto.randomUUID(), name, text, timestamp: Date.now() };
+      item.replies = [...(item.replies ?? []), reply].slice(-30);
+      await env.FEED_KV.put('feed', JSON.stringify(feed));
+      return json({ reply });
     }
 
     if (url.pathname === '/api/live' && request.method === 'GET') {

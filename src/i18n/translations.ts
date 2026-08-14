@@ -1,6 +1,6 @@
 export const translations = {
   cs: {
-    nav: { tour: 'TOUR', music: 'HUDBA', about: 'O MNĚ', soundcloud: 'SOUNDCLOUD' },
+    nav: { tour: 'TOUR', music: 'HUDBA', about: 'O MNĚ', soundcloud: 'SOUNDCLOUD', collab: 'SPOLUPRÁCE', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALERIE' },
     liveOnSoundcloud: 'ŽIVĚ NA SOUNDCLOUDU',
     bio: 'Český house DJ a live remixer. Rezidentní DJ legendárního klubu Studio 54 Praha, tvůrce afterparty House Friends.',
     stats: {
@@ -32,14 +32,18 @@ export const translations = {
       bookingEmail: 'booking@josemadeira.com',
     },
     discography: { label: 'DISKOGRAFIE', title: 'NEJNOVĚJŠÍ VYDÁNÍ' },
+    streaming: { eyebrow: 'POSLOUCHEJ VŠUDE', title: 'STREAMING' },
     label: { name: 'Housemagazine.cz Records', tag: 'Vydavatelství' },
     collab: {
       eyebrow: 'SPOLUPRÁCE',
       title: 'COLLABORATORS',
       name: 'Yan Lan',
       role: 'Producent',
+      p1: 'Jose Madeira pravidelně spolupracuje s producentem Yan Lan — dvojice spojuje jeho hlubokou znalost afterhours dancefloorů se svěžím producentským rukopisem do společných tracků, které mají premiéru přímo na jeho setech ve Studio 54.',
+      p2: 'Jejich zatím nejnovější společné vydání "Life Is Good" vyšlo pod Housemagazine.cz Records — největším českým vydavatelstvím elektronické taneční hudby, které stojí i za dalšími releasy z pražské house scény.',
       releaseLabel: 'Společné vydání',
       releaseTitle: 'Life Is Good',
+      labelTag: 'Vydavatelství',
       cta: 'POSLECHNOUT NA HOUSEMAGAZINE.CZ',
     },
     feed: { eyebrow: 'ŽIVĚ OD JOSE', title: 'FEED', empty: 'ZATÍM ŽÁDNÉ PŘÍSPĚVKY…' },
@@ -52,7 +56,7 @@ export const translations = {
     topNav: { residency: 'STUDIO 54, PRAHA — ŽIVĚ' },
   },
   en: {
-    nav: { tour: 'TOUR', music: 'MUSIC', about: 'ABOUT', soundcloud: 'SOUNDCLOUD' },
+    nav: { tour: 'TOUR', music: 'MUSIC', about: 'ABOUT', soundcloud: 'SOUNDCLOUD', collab: 'COLLABORATORS', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALLERY' },
     liveOnSoundcloud: 'LIVE ON SOUNDCLOUD',
     bio: 'Czech house DJ & live remixer. Resident DJ at the legendary Studio 54 Prague, creator of the House Friends afterparties.',
     stats: {
@@ -84,14 +88,18 @@ export const translations = {
       bookingEmail: 'booking@josemadeira.com',
     },
     discography: { label: 'DISCOGRAPHY', title: 'LATEST RELEASES' },
+    streaming: { eyebrow: 'LISTEN EVERYWHERE', title: 'STREAMING' },
     label: { name: 'Housemagazine.cz Records', tag: 'Label' },
     collab: {
       eyebrow: 'COLLABORATION',
       title: 'COLLABORATORS',
       name: 'Yan Lan',
       role: 'Producer',
+      p1: "Jose Madeira regularly teams up with producer Yan Lan, pairing his deep read of the afterhours dancefloor with a sharp production touch on joint tracks that premiere straight from his sets at Studio 54.",
+      p2: 'Their latest joint release, "Life Is Good," came out on Housemagazine.cz Records, the largest Czech electronic dance music label, home to several other releases from the Prague house scene.',
       releaseLabel: 'Joint release',
       releaseTitle: 'Life Is Good',
+      labelTag: 'Label',
       cta: 'LISTEN ON HOUSEMAGAZINE.CZ',
     },
     feed: { eyebrow: 'LIVE FROM JOSE', title: 'FEED', empty: 'NO POSTS YET…' },
