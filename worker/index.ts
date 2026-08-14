@@ -9,9 +9,10 @@ interface FeedItem {
   id: string;
   text: string;
   timestamp: number;
-  type: 'text' | 'link';
+  type: 'text' | 'link' | 'photo' | 'video';
   link?: string;
   platform?: 'instagram' | 'tiktok' | 'facebook' | null;
+  fileId?: string;
 }
 
 interface LiveState {
@@ -52,15 +53,53 @@ const normalizePlatform = (word: string): LiveState['platform'] => {
   return null;
 };
 
+async function pushFeedItem(item: FeedItem, env: Env): Promise<void> {
+  const raw = await env.FEED_KV.get('feed');
+  const feed: FeedItem[] = raw ? JSON.parse(raw) : [];
+  feed.unshift(item);
+  await env.FEED_KV.put('feed', JSON.stringify(feed.slice(0, 60)));
+}
+
 async function handleTelegramUpdate(update: any, env: Env): Promise<void> {
   const message = update?.message;
-  if (!message?.text) return;
+  if (!message) return;
 
   if (env.ALLOWED_CHAT_ID) {
     const chatId = String(message.chat?.id ?? '');
     if (chatId !== env.ALLOWED_CHAT_ID) return;
   }
 
+  // Photo: Telegram sends multiple sizes, take the largest (last)
+  if (Array.isArray(message.photo) && message.photo.length > 0) {
+    const largest = message.photo[message.photo.length - 1];
+    await pushFeedItem(
+      {
+        id: crypto.randomUUID(),
+        text: message.caption ?? '',
+        timestamp: Date.now(),
+        type: 'photo',
+        fileId: largest.file_id,
+      },
+      env
+    );
+    return;
+  }
+
+  if (message.video?.file_id) {
+    await pushFeedItem(
+      {
+        id: crypto.randomUUID(),
+        text: message.caption ?? '',
+        timestamp: Date.now(),
+        type: 'video',
+        fileId: message.video.file_id,
+      },
+      env
+    );
+    return;
+  }
+
+  if (!message.text) return;
   const text: string = message.text.trim();
 
   const liveMatch = text.match(/^live\s+(off|tiktok|tt|insta|instagram|ig|fb|facebook)$/i);
@@ -80,19 +119,17 @@ async function handleTelegramUpdate(update: any, env: Env): Promise<void> {
   const url = extractUrl(text);
   const platform = url ? detectPlatform(url) : null;
 
-  const item: FeedItem = {
-    id: crypto.randomUUID(),
-    text,
-    timestamp: Date.now(),
-    type: url ? 'link' : 'text',
-    link: url,
-    platform,
-  };
-
-  const raw = await env.FEED_KV.get('feed');
-  const feed: FeedItem[] = raw ? JSON.parse(raw) : [];
-  feed.unshift(item);
-  await env.FEED_KV.put('feed', JSON.stringify(feed.slice(0, 60)));
+  await pushFeedItem(
+    {
+      id: crypto.randomUUID(),
+      text,
+      timestamp: Date.now(),
+      type: url ? 'link' : 'text',
+      link: url,
+      platform,
+    },
+    env
+  );
 }
 
 export default {
@@ -123,6 +160,29 @@ export default {
       const raw = await env.FEED_KV.get('live');
       const live: LiveState = raw ? JSON.parse(raw) : { active: false, platform: null, since: 0 };
       return json({ live });
+    }
+
+    // Proxies Telegram-hosted media so the bot token never reaches the browser
+    const mediaMatch = url.pathname.match(/^\/api\/media\/([\w-]+)$/);
+    if (mediaMatch && request.method === 'GET') {
+      const fileId = mediaMatch[1];
+      const fileInfoRes = await fetch(
+        `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
+      );
+      const fileInfo = await fileInfoRes.json<{ ok: boolean; result?: { file_path: string } }>();
+      if (!fileInfo.ok || !fileInfo.result) {
+        return new Response('Not found', { status: 404 });
+      }
+      const fileRes = await fetch(
+        `https://api.telegram.org/file/bot${env.TELEGRAM_BOT_TOKEN}/${fileInfo.result.file_path}`
+      );
+      return new Response(fileRes.body, {
+        headers: {
+          'Content-Type': fileRes.headers.get('Content-Type') ?? 'application/octet-stream',
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          ...CORS_HEADERS,
+        },
+      });
     }
 
     return new Response('Not found', { status: 404 });

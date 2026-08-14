@@ -6,8 +6,10 @@ import { useAfterHours } from './hooks/useAfterHours';
 import { BackgroundPhotos } from './components/BackgroundPhotos';
 import { StageAtmosphere } from './components/StageAtmosphere';
 import { BottomSpectrum } from './components/BottomSpectrum';
+import { LiveBanner } from './components/LiveBanner';
+import { FeedSection } from './components/FeedSection';
+import { GallerySection } from './components/GallerySection';
 import { HorizontalStage } from './components/HorizontalStage';
-import { BeatCursor } from './components/BeatCursor';
 import { GlowLogo } from './components/GlowLogo';
 import { Hero } from './components/Hero';
 import { Preloader } from './components/Preloader';
@@ -21,12 +23,8 @@ import joseAvatar from './assets/jose-avatar.jpg';
 import logoReal from './assets/logo-real.svg';
 
 const tourDates = [
-  { id: '1', city: 'PRAGUE', venue: 'Studio 54 — House Friends', date: '15.03', country: 'CZ' },
-  { id: '2', city: 'PRAGUE', venue: 'Studio 54 — After Hours', date: '22.03', country: 'CZ' },
-  { id: '3', city: 'BRNO', venue: 'Fléda', date: '05.04', country: 'CZ' },
-  { id: '4', city: 'BRATISLAVA', venue: 'Le Colonial', date: '12.04', country: 'SK' },
-  { id: '5', city: 'PRAGUE', venue: 'Studio 54 — Anniversary', date: '20.04', country: 'CZ' },
-  { id: '6', city: 'VIENNA', venue: 'Grelle Forelle', date: '03.05', country: 'AT' },
+  { id: '1', city: 'PRAGUE', venue: 'Studio 54', date: '16.08', country: 'CZ' },
+  { id: '2', city: 'PRAGUE', venue: 'Studio 54', date: '30.08', country: 'CZ' },
 ];
 
 const BPMStats = () => {
@@ -80,7 +78,7 @@ const TourSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-8 pb-28 pt-16 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-8 pb-44 pt-16 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -100,27 +98,27 @@ const TourSection = () => {
         {t.movement.title}
       </motion.h2>
 
-      <div className="space-y-[1px]">
+      <div className="grid grid-cols-2 gap-3 sm:block sm:space-y-[1px] sm:gap-0">
         {tourDates.map((date, i) => (
           <motion.div
             key={date.id}
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: i * 0.06 }}
-            className="tour-card group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 sm:gap-4 px-5 py-6 sm:px-8 sm:py-8 md:px-10 md:py-9 lg:px-6 lg:py-2.5 bg-[#111] hover:bg-[#1a1010] border-l-4 border-transparent hover:border-[#C81E2C] transition-all overflow-hidden"
+            className="tour-card group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 px-4 py-5 sm:px-8 sm:py-8 md:px-10 md:py-9 lg:px-6 lg:py-2.5 bg-[#111] hover:bg-[#1a1010] border-l-4 border-transparent hover:border-[#C81E2C] transition-all overflow-hidden"
             onMouseEnter={() => setHovered(date.id)}
             onMouseLeave={() => setHovered(null)}
           >
-            <div className="flex items-center gap-5 sm:gap-8 md:gap-14 lg:gap-6">
-              <div className="mono text-3xl sm:text-5xl md:text-6xl lg:text-3xl font-black text-white/90 tabular-nums tracking-[-1px] md:tracking-[-2px] w-[64px] sm:w-[110px] md:w-[130px] lg:w-[80px] transition-transform duration-500 group-hover:scale-110">{date.date}</div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 md:gap-14 lg:gap-6">
+              <div className="mono text-3xl sm:text-5xl md:text-6xl lg:text-3xl font-black text-white/90 tabular-nums tracking-[-1px] md:tracking-[-2px] sm:w-[110px] md:w-[130px] lg:w-[80px] transition-transform duration-500 group-hover:scale-110">{date.date}</div>
               <div>
-                <div className="text-2xl sm:text-3xl md:text-5xl lg:text-2xl font-bold tracking-[-0.5px] md:tracking-[-1.5px] group-hover:text-[#C81E2C] transition-all duration-300">{date.city}</div>
-                <div className="mono text-sm sm:text-base lg:text-xs text-gray-500 mt-1 transition-colors group-hover:text-white/70">{date.venue}</div>
+                <div className="text-xl sm:text-3xl md:text-5xl lg:text-2xl font-bold tracking-[-0.5px] md:tracking-[-1.5px] group-hover:text-[#C81E2C] transition-all duration-300">{date.city}</div>
+                <div className="mono text-xs sm:text-base lg:text-xs text-gray-500 mt-1 transition-colors group-hover:text-white/70">{date.venue}</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 sm:gap-5 self-end sm:self-auto">
+            <div className="flex items-center gap-4 sm:gap-5 self-start sm:self-auto">
               <div className="mono text-xs sm:text-sm px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/20 text-gray-400">{date.country}</div>
               <div className="w-9 h-9 sm:w-11 sm:h-11 lg:w-8 lg:h-8 border border-[#C81E2C]/70 rounded-full flex items-center justify-center text-[#C81E2C] text-lg group-hover:rotate-45 transition-transform">
                 →
@@ -143,7 +141,7 @@ const AboutSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-14 md:gap-20 lg:gap-10 items-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -220,7 +218,7 @@ const CollaboratorsSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -271,7 +269,7 @@ const MusicSection = () => {
   const visible = sounds.slice(0, 6);
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-24 sm:pb-36 pt-16 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-36 pt-16 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -356,6 +354,7 @@ const MainStage = () => {
       <BackgroundPhotos />
       <StageAtmosphere />
       <BottomSpectrum />
+      <LiveBanner />
 
       <BPMStats />
       <GlitchOverlay active={showGlitch} />
@@ -430,6 +429,12 @@ const MainStage = () => {
 
         {/* Discography */}
         <div id="panel-music" className="hstage-panel"><MusicSection /></div>
+
+        {/* Live feed from Telegram */}
+        <div id="panel-feed" className="hstage-panel"><FeedSection /></div>
+
+        {/* Photo/video gallery from IG/FB/TikTok, synced via Telegram */}
+        <div id="panel-gallery" className="hstage-panel"><GallerySection /></div>
       </HorizontalStage>
 
       {/* Footer — pinned outside the horizontal scroll, not one of the panels */}
@@ -463,7 +468,6 @@ export default function App() {
   return (
     <>
       <SoundCloudPlayer />
-      <BeatCursor />
 
       <AnimatePresence>
         {!loaded && <Preloader onDone={() => setLoaded(true)} />}
