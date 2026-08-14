@@ -1,6 +1,6 @@
 export const translations = {
   cs: {
-    nav: { tour: 'TOUR', music: 'HUDBA', about: 'O MNĚ', soundcloud: 'SOUNDCLOUD', collab: 'SPOLUPRÁCE', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALERIE' },
+    nav: { tour: 'TOUR', music: 'HUDBA', about: 'O MNĚ', soundcloud: 'SOUNDCLOUD', collab: 'SPOLUPRÁCE', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALERIE', contact: 'KONTAKT' },
     liveOnSoundcloud: 'ŽIVĚ NA SOUNDCLOUDU',
     bio: 'Český house DJ a live remixer. Rezidentní DJ legendárního klubu Studio 54 Praha, tvůrce afterparty House Friends.',
     stats: {
@@ -48,6 +48,7 @@ export const translations = {
     },
     feed: { eyebrow: 'ŽIVĚ OD JOSE', title: 'FEED', empty: 'ZATÍM ŽÁDNÉ PŘÍSPĚVKY…' },
     gallery: { eyebrow: 'IG / FB / TIKTOK', title: 'FOTOGALERIE', empty: 'ZATÍM ŽÁDNÉ FOTKY…' },
+    contact: { eyebrow: 'KONTAKT', title: 'NAPIŠTE MI', p1: 'Booking, spolupráce, nebo jen pozdrav — napište mi na e-mail, ozvu se co nejdřív.' },
     afterHours: 'AKTIVNÍ REŽIM AFTER HOURS',
     footer: { rights: '© 2026 JOSEMADEIRA — VŠECHNA PRÁVA VYHRAZENA', location: 'STUDIO 54, PRAHA' },
     player: { live: 'ŽIVĚ NA SOUNDCLOUDU', paused: 'POZASTAVENO', connecting: 'PŘIPOJOVÁNÍ…' },
@@ -56,7 +57,7 @@ export const translations = {
     topNav: { residency: 'STUDIO 54, PRAHA — ŽIVĚ' },
   },
   en: {
-    nav: { tour: 'TOUR', music: 'MUSIC', about: 'ABOUT', soundcloud: 'SOUNDCLOUD', collab: 'COLLABORATORS', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALLERY' },
+    nav: { tour: 'TOUR', music: 'MUSIC', about: 'ABOUT', soundcloud: 'SOUNDCLOUD', collab: 'COLLABORATORS', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALLERY', contact: 'CONTACT' },
     liveOnSoundcloud: 'LIVE ON SOUNDCLOUD',
     bio: 'Czech house DJ & live remixer. Resident DJ at the legendary Studio 54 Prague, creator of the House Friends afterparties.',
     stats: {
@@ -104,6 +105,7 @@ export const translations = {
     },
     feed: { eyebrow: 'LIVE FROM JOSE', title: 'FEED', empty: 'NO POSTS YET…' },
     gallery: { eyebrow: 'IG / FB / TIKTOK', title: 'GALLERY', empty: 'NO PHOTOS YET…' },
+    contact: { eyebrow: 'CONTACT', title: 'GET IN TOUCH', p1: 'Bookings, collabs, or just a hello — drop me an email and I will get back to you soon.' },
     afterHours: 'AFTER HOURS MODE ACTIVE',
     footer: { rights: '© 2026 JOSEMADEIRA — ALL RIGHTS RESERVED', location: 'STUDIO 54, PRAGUE' },
     player: { live: 'LIVE ON SOUNDCLOUD', paused: 'PAUSED', connecting: 'CONNECTING…' },

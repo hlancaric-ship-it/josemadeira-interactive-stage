@@ -343,6 +343,52 @@ const StreamingSection = () => {
   );
 };
 
+const ContactSection = () => {
+  const { lang } = useLangStore();
+  const t = translations[lang];
+
+  return (
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.6 }}
+        className="mono text-xs sm:text-sm tracking-[4px] sm:tracking-[6px] text-[#C81E2C] mb-3 lg:mb-1"
+      >
+        {t.contact.eyebrow}
+      </motion.div>
+      <motion.h2
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.7, delay: 0.05 }}
+        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-6"
+      >
+        {t.contact.title}
+      </motion.h2>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5 }}
+        className="max-w-2xl"
+      >
+        <p className="text-gray-400 font-light leading-relaxed text-base sm:text-lg lg:text-sm mb-8 lg:mb-6">
+          {t.contact.p1}
+        </p>
+        <a
+          href={`mailto:${t.origins.bookingEmail}`}
+          className="inline-block mono text-lg sm:text-2xl px-6 py-4 border border-[#C81E2C]/70 text-[#C81E2C] hover:bg-[#C81E2C] hover:text-white transition-all"
+        >
+          {t.origins.bookingEmail} ↗
+        </a>
+      </motion.div>
+    </section>
+  );
+};
+
 const MusicSection = () => {
   const { sounds, currentIndex, isPlaying, playIndex } = useAudioStore();
   const { lang } = useLangStore();
@@ -447,14 +493,14 @@ const MainStage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           id="panel-hero"
-          className="hstage-panel relative z-20 min-h-[100vh] px-6 md:px-16 pt-28 pb-32 sm:pt-32 sm:pb-40 md:pt-36 md:pb-56 group"
+          className="hstage-panel relative z-20 lg:min-h-screen px-6 md:px-16 pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-36 md:pb-24 group"
         >
           {/* oversized ghost numeral for asymmetric depth */}
           <div className="pointer-events-none select-none absolute top-[6%] right-[4%] text-[240px] md:text-[420px] font-black leading-none text-white/[0.025] hidden md:block">
             54
           </div>
 
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-y-14 items-center justify-items-center min-h-[60vh]">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-y-10 lg:gap-y-14 items-center justify-items-center lg:min-h-[60vh]">
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2 mono text-[11px] tracking-[5px] text-[#C81E2C] mb-7">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C81E2C] shadow-[0_0_8px_#C81E2C]" />
@@ -498,6 +544,9 @@ const MainStage = () => {
 
         {/* Discography */}
         <div id="panel-music" className="hstage-panel"><MusicSection /></div>
+
+        {/* Contact */}
+        <div id="panel-contact" className="hstage-panel"><ContactSection /></div>
 
         {/* Live feed from Telegram */}
 

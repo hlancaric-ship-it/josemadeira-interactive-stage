@@ -17,6 +17,7 @@ const LINKS: NavLink[] = [
   { key: 'streaming', panel: 'panel-streaming' },
   { key: 'music', panel: 'panel-music' },
   { key: 'gallery', panel: 'panel-gallery' },
+  { key: 'contact', panel: 'panel-contact' },
 ];
 
 const jumpTo = (id: string) => {

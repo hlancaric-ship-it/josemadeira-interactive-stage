@@ -33,6 +33,13 @@ h1, .hero-title, h2 {
   text-transform: uppercase;
 }
 
+/* Section headings: bold italic slant, Nike "Just Do It" energy */
+h2 {
+  font-style: italic;
+  transform: skewX(-4deg);
+  display: inline-block;
+}
+
 /* Logo: beat-synced glow pulse + light sweep */
 .logo-glow-wrap .logo-base {
   filter: drop-shadow(0 0 18px rgba(200,30,44,0.55)) drop-shadow(0 0 46px rgba(200,30,44,0.3));
