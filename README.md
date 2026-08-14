@@ -5,8 +5,22 @@ Oficiální web pro DJ Jose Madeira (Studio 54 Praha, House Friends). Vite + Rea
 ## Kde web běží
 
 - **Produkce**: https://josemadeira-interactive-stage.pages.dev (Cloudflare Pages)
+- **Vlastní doména**: josemadeira.com + www.josemadeira.com (custom domain na tom samém Pages projektu)
 - **GitHub repo**: https://github.com/hlancaric-ship-it/josemadeira-interactive-stage
-- **Cloudflare účet**: `Hlancaric@gmail.com's Account`
+- **Cloudflare účet**: `Hlancaric@gmail.com's Account`, account ID `3a147fa6382bb87477201b385bb945ea`
+- **Cloudflare Pages project name**: `josemadeira-interactive-stage`
+- **Cloudflare zone ID** (josemadeira.com): `327ff3caec3f81b65cb8cbeee182f0d3`
+
+## Doména (josemadeira.com) — registrátor a DNS
+
+- **Registrátor**: Forpsi (login 571172fh, zákazník Josef Dlouhý)
+- Doména byla přesunuta z Forpsi nameserverů na **Cloudflare nameservery**:
+  `emily.ns.cloudflare.com`, `viddy.ns.cloudflare.com`
+- DNS zóna je teď spravovaná v Cloudflare (ne ve Forpsi) — veškeré DNS změny (MX, TXT, CNAME…) se dělají v Cloudflare dashboardu, ne ve Forpsi
+- **E-mail** (@josemadeira.com) běží přes iCloud Mail (mxavas), MX/SPF/DKIM/apple-domain záznamy byly ručně přeneseny z Forpsi do Cloudflare DNS při migraci — pokud e-mail přestane fungovat, zkontrolovat tyto záznamy v Cloudflare DNS proti tomu, co bylo původně ve Forpsi
+- DNSSEC byl na Forpsi zapnutý — pokud bude potřeba upravovat nameservery znovu, může být nutné ho nejdřív vypnout
+
+**Bezpečnost**: Cloudflare Global API Key byl jednorázově použit k založení zóny a nastavení domény — po dokončení práce **musí být zneplatněn/rotován** v Cloudflare dashboardu (My Profile → API Tokens → Global API Key → Change), protože byl sdílen v chatu.
 
 ## Lokální spuštění
 
@@ -99,9 +113,7 @@ worker/
 
 Reálné jméno, roky aktivní kariéry a ocenění se nepodařilo nikde dohledat — netvrdit nic bez potvrzení od Jose.
 
-## Známé restY / TODO pro dokončení
+## Známé resty / TODO pro dokončení
 
-- Nadpisy sekcí přestylovat do výraznější "Nike-style" typografie (velký, tučný, sportovní řez)
-- Zkontrolovat/opravit mezeru mezi Hero a Tour sekcí na mobilu
-- Kontaktní sekce "Napište mi" zatím chybí
 - Feed sekce byla na přání smazána z frontendu, ale backend (`/api/feed`, `/api/feed/:id/reply`) běží dál — dá se snadno vrátit
+- SSL certifikát pro custom doménu se ověřuje automaticky po DNS propagaci (může trvat pár hodin až 24h od změny nameserverů)
