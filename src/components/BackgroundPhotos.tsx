@@ -3,17 +3,34 @@ import joseAvatar from '../assets/jose-avatar.jpg';
 import bgPhoto1 from '../assets/bg-photo-1.jpg';
 import bgPhoto2 from '../assets/bg-photo-2.jpg';
 
+const PHOTOS = [bgPhoto1, joseAvatar, bgPhoto2];
+
 interface Layer {
   el: HTMLImageElement;
-  depth: number; // 0 = far (moves little), 1 = near (moves a lot)
-  driftPhase: number;
-  driftSpeed: number;
+  depth: number;
   maxOpacity: number;
-  revealDelay: number; // ms before this layer starts fading in
+  revealDelay: number;
   revealDuration: number;
   breathePhase: number;
   breatheSpeed: number;
+  revealStart: number;
+  nextShuffle: number;
+  shuffling: boolean;
 }
+
+const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+/** Picks a fresh random spot/size for a ghost layer, avoiding dead-center so it doesn't fight the content. */
+const randomizePosition = (el: HTMLImageElement) => {
+  const size = rand(38, 62);
+  const top = rand(-15, 70);
+  const left = Math.random() < 0.5 ? rand(-18, 15) : rand(55, 85);
+  el.style.width = `${size}%`;
+  el.style.top = `${top}%`;
+  el.style.left = `${left}%`;
+  el.style.right = 'auto';
+  el.style.bottom = 'auto';
+};
 
 export const BackgroundPhotos = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,31 +43,36 @@ export const BackgroundPhotos = () => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const imgs = Array.from(container.querySelectorAll<HTMLImageElement>('[data-depth]'));
+    const start = performance.now();
+
     layersRef.current = imgs.map((el, i) => {
       const maxOpacity = parseFloat(el.dataset.maxOpacity || '0.2');
-      el.style.opacity = reduced ? String(maxOpacity) : '0';
+      el.style.opacity = '0';
+      randomizePosition(el);
+      const depth = 0.15 + Math.random() * 0.45;
+      el.style.transform = `scale(${1 + depth * 0.12})`;
       return {
         el,
-        depth: parseFloat(el.dataset.depth || '0.3'),
-        driftPhase: i * 2.1,
-        driftSpeed: 0.06 + i * 0.02,
+        depth,
         maxOpacity,
-        revealDelay: 300 + Math.random() * 2200,
+        revealDelay: 300 + i * 500 + Math.random() * 1200,
         revealDuration: 1800 + Math.random() * 1200,
         breathePhase: Math.random() * Math.PI * 2,
         breatheSpeed: 0.15 + Math.random() * 0.2,
+        revealStart: 0,
+        nextShuffle: rand(14000, 24000),
+        shuffling: false,
       };
     });
 
-    // Static depth scale only — no mouse/scroll parallax, just the ghost fade-in + slow breathe
-    layersRef.current.forEach(({ el, depth }) => {
-      el.style.transform = `scale(${1 + depth * 0.12})`;
-    });
-
-    if (reduced) return;
+    if (reduced) {
+      layersRef.current.forEach(({ el, maxOpacity }) => {
+        el.style.opacity = String(maxOpacity);
+      });
+      return;
+    }
 
     let raf: number;
-    const start = performance.now();
     const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
 
     // Breathing doesn't need 60fps — cap at ~30fps to halve the work on older GPUs
@@ -71,11 +93,38 @@ export const BackgroundPhotos = () => {
       const time = now * 0.001;
       const elapsed = now - start;
 
-      layersRef.current.forEach(({ el, maxOpacity, revealDelay, revealDuration, breathePhase, breatheSpeed }) => {
-        const revealT = Math.min(1, Math.max(0, (elapsed - revealDelay) / revealDuration));
-        const revealed = easeOutCubic(revealT);
-        const breathe = revealT >= 1 ? 0.8 + 0.2 * Math.sin(time * breatheSpeed + breathePhase) : 1;
-        el.style.opacity = String(maxOpacity * revealed * breathe);
+      layersRef.current.forEach((layer) => {
+        const { el, maxOpacity, revealDelay, revealDuration, breathePhase, breatheSpeed } = layer;
+
+        // Every so often, fade the ghost out, jump it to a new random spot, then fade back in
+        if (elapsed > layer.nextShuffle && !layer.shuffling) {
+          layer.shuffling = true;
+        }
+
+        let targetOpacity: number;
+        if (layer.shuffling) {
+          const fadeElapsed = elapsed - layer.nextShuffle;
+          if (fadeElapsed < 900) {
+            targetOpacity = maxOpacity * (1 - fadeElapsed / 900);
+          } else if (fadeElapsed < 1000) {
+            randomizePosition(el);
+            targetOpacity = 0;
+          } else {
+            const fadeInT = Math.min(1, (fadeElapsed - 1000) / 1400);
+            targetOpacity = maxOpacity * easeOutCubic(fadeInT);
+            if (fadeInT >= 1) {
+              layer.shuffling = false;
+              layer.nextShuffle = elapsed + rand(14000, 24000);
+            }
+          }
+        } else {
+          const revealT = Math.min(1, Math.max(0, (elapsed - revealDelay) / revealDuration));
+          const revealed = easeOutCubic(revealT);
+          const breathe = revealT >= 1 ? 0.85 + 0.15 * Math.sin(time * breatheSpeed + breathePhase) : 1;
+          targetOpacity = maxOpacity * revealed * breathe;
+        }
+
+        el.style.opacity = String(Math.max(0, targetOpacity));
       });
       raf = requestAnimationFrame(render);
     };
@@ -89,30 +138,17 @@ export const BackgroundPhotos = () => {
 
   return (
     <div ref={containerRef} className="fixed inset-0 z-0 overflow-hidden pointer-events-none [perspective:1000px]">
-      <img
-        data-depth="0.15"
-        data-max-opacity="0.15"
-        src={bgPhoto1}
-        alt=""
-        className="absolute -top-[10%] -left-[15%] w-[60%] max-w-[900px] will-change-transform"
-        style={{ filter: 'grayscale(1) contrast(1.3) sepia(0.3) hue-rotate(-30deg) saturate(2) blur(2px)' }}
-      />
-      <img
-        data-depth="0.55"
-        data-max-opacity="0.25"
-        src={joseAvatar}
-        alt=""
-        className="absolute top-[15%] -right-[12%] w-[45%] max-w-[700px] will-change-transform"
-        style={{ filter: 'grayscale(1) contrast(1.3) sepia(0.3) hue-rotate(-30deg) saturate(2)' }}
-      />
-      <img
-        data-depth="0.3"
-        data-max-opacity="0.18"
-        src={bgPhoto2}
-        alt=""
-        className="absolute bottom-[-15%] left-[20%] w-[55%] max-w-[850px] will-change-transform"
-        style={{ filter: 'grayscale(1) contrast(1.3) sepia(0.3) hue-rotate(-30deg) saturate(2) blur(1px)' }}
-      />
+      {PHOTOS.map((src, i) => (
+        <img
+          key={i}
+          data-depth={i === 1 ? '0.55' : '0.3'}
+          data-max-opacity={i === 1 ? '0.25' : '0.18'}
+          src={src}
+          alt=""
+          className="absolute max-w-[900px] will-change-transform transition-[top,left] duration-[1400ms] ease-out"
+          style={{ filter: 'grayscale(1) contrast(1.3) sepia(0.3) hue-rotate(-30deg) saturate(2) blur(1.5px)' }}
+        />
+      ))}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black" />
       <div className="absolute inset-0" style={{ boxShadow: 'inset 0 0 220px 60px rgba(0,0,0,0.85)' }} />
     </div>
