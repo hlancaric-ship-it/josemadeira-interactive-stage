@@ -5,6 +5,7 @@ import { useKonamiCode } from './hooks/useKonamiCode';
 import { useAfterHours } from './hooks/useAfterHours';
 import { BackgroundPhotos } from './components/BackgroundPhotos';
 import { StageAtmosphere } from './components/StageAtmosphere';
+import { BottomSpectrum } from './components/BottomSpectrum';
 import { HorizontalStage } from './components/HorizontalStage';
 import { BeatCursor } from './components/BeatCursor';
 import { GlowLogo } from './components/GlowLogo';
@@ -17,6 +18,7 @@ import { LangSwitch } from './components/LangSwitch';
 import { useLangStore } from './store/langStore';
 import { translations } from './i18n/translations';
 import joseAvatar from './assets/jose-avatar.jpg';
+import logoReal from './assets/logo-real.svg';
 
 const tourDates = [
   { id: '1', city: 'PRAGUE', venue: 'Studio 54 — House Friends', date: '15.03', country: 'CZ' },
@@ -187,6 +189,9 @@ const AboutSection = () => {
           <div className="mono text-xs tracking-[2px] text-white/40">
             {t.origins.bookingLabel}: <a href={`mailto:${t.origins.bookingEmail}`} className="text-white/70 hover:text-[#C81E2C] transition-colors">{t.origins.bookingEmail}</a>
           </div>
+          <div className="mono text-xs tracking-[2px] text-white/40 mt-2">
+            {t.label.tag}: <span className="text-white/70">{t.label.name}</span>
+          </div>
         </motion.div>
 
         <motion.div
@@ -206,6 +211,54 @@ const AboutSection = () => {
           </div>
         </motion.div>
       </div>
+    </section>
+  );
+};
+
+const CollaboratorsSection = () => {
+  const { lang } = useLangStore();
+  const t = translations[lang];
+
+  return (
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.6 }}
+        className="mono text-xs sm:text-sm tracking-[4px] sm:tracking-[6px] text-[#C81E2C] mb-3 lg:mb-1"
+      >
+        {t.collab.eyebrow}
+      </motion.div>
+      <motion.h2
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.7, delay: 0.05 }}
+        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-10 md:mb-16 lg:mb-6"
+      >
+        {t.collab.title}
+      </motion.h2>
+
+      <motion.a
+        href="https://www.housemagazine.cz/product-page/josemadeira-yan-lan-life-is-good"
+        target="_blank"
+        rel="noreferrer"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5 }}
+        className="tour-card group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 px-5 py-6 sm:px-8 sm:py-8 lg:px-6 lg:py-5 bg-[#111] hover:bg-[#1a1010] border-l-4 border-transparent hover:border-[#C81E2C] transition-all overflow-hidden max-w-2xl"
+      >
+        <div>
+          <div className="mono text-xs tracking-[2px] text-[#C81E2C] mb-2">{t.collab.role}</div>
+          <div className="text-3xl sm:text-4xl lg:text-3xl font-bold tracking-[-0.5px] group-hover:text-[#C81E2C] transition-all duration-300">{t.collab.name}</div>
+          <div className="mono text-xs sm:text-sm text-gray-500 mt-2">{t.collab.releaseLabel}: <span className="text-white/70">{t.collab.releaseTitle}</span></div>
+        </div>
+        <div className="mono text-xs px-4 py-2.5 border border-[#C81E2C]/70 text-[#C81E2C] group-hover:bg-[#C81E2C] group-hover:text-white transition-all whitespace-nowrap">
+          {t.collab.cta} ↗
+        </div>
+      </motion.a>
     </section>
   );
 };
@@ -302,6 +355,7 @@ const MainStage = () => {
     <div className={`relative min-h-screen bg-[#0A0808] text-white ${isAfterHours ? 'after-hours' : ''}`}>
       <BackgroundPhotos />
       <StageAtmosphere />
+      <BottomSpectrum />
 
       <BPMStats />
       <GlitchOverlay active={showGlitch} />
@@ -314,7 +368,7 @@ const MainStage = () => {
           <button onClick={() => jumpTo('panel-about')} className="hover:text-[#C81E2C] transition-colors">{t.nav.about}</button>
           <button onClick={() => jumpTo('panel-music')} className="hover:text-[#C81E2C] transition-colors">{t.nav.music}</button>
         </div>
-        <div className="justify-self-center">JOSEMADEIRA</div>
+        <img src={logoReal} alt="Jose Madeira" className="justify-self-center h-3 w-auto opacity-90" />
         <div className="flex items-center justify-end gap-4 sm:gap-6">
           <span className="hidden sm:inline">{t.topNav.residency}</span>
           <LangSwitch />
@@ -371,6 +425,9 @@ const MainStage = () => {
         {/* About & Origins */}
         <div id="panel-about" className="hstage-panel"><AboutSection /></div>
 
+        {/* Collaborators */}
+        <div id="panel-collab" className="hstage-panel"><CollaboratorsSection /></div>
+
         {/* Discography */}
         <div id="panel-music" className="hstage-panel"><MusicSection /></div>
       </HorizontalStage>
@@ -379,9 +436,12 @@ const MainStage = () => {
       <footer className="relative lg:fixed lg:bottom-0 lg:left-0 lg:right-0 z-30 border-t border-white/5 py-12 lg:py-4 px-8 flex flex-col md:flex-row justify-between items-center text-[10px] mono tracking-[4px] text-gray-500 bg-black/40 backdrop-blur-md">
         <div>{t.footer.rights}</div>
         <div className="flex gap-10 mt-6 md:mt-0">
-          <a href="https://www.facebook.com/josemadeiraofficial/" target="_blank" className="hover:text-[#C81E2C] transition-colors">FACEBOOK</a>
-          <a href="https://soundcloud.com/josemadeiraofficial" target="_blank" className="hover:text-[#C81E2C] transition-colors">SOUNDCLOUD</a>
-          <a href="#" className="hover:text-[#C81E2C] transition-colors">INSTAGRAM</a>
+          <a href="https://www.facebook.com/josemadeiraofficialnew/" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">FACEBOOK</a>
+          <a href="https://soundcloud.com/josemadeiraofficial" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">SOUNDCLOUD</a>
+          <a href="https://www.instagram.com/josemadeiraofficialnew" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">INSTAGRAM</a>
+          <a href="https://www.youtube.com/@josemadeiraofficial" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">YOUTUBE</a>
+          <a href="https://open.spotify.com/artist/0Gr1t69ZXhohsB8dwj4sLr" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">SPOTIFY</a>
+          <a href="https://music.apple.com/cz/artist/josemadeira/1814103021" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">APPLE MUSIC</a>
           <span className="text-white/30">{t.footer.location}</span>
         </div>
       </footer>

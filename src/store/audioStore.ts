@@ -2,6 +2,17 @@ import { create } from 'zustand';
 
 const FIXED_BPM = 128;
 
+/** SoundCloud's embed API exposes no raw audio to analyze — no way to detect real BPM
+ * client-side. Parse it from the track title when the DJ tags it (common practice);
+ * otherwise fall back to the house-standard 128. */
+const parseBpmFromTitle = (title: string | undefined): number => {
+  if (!title) return FIXED_BPM;
+  const match = title.match(/(\d{2,3})\s*bpm/i);
+  if (!match) return FIXED_BPM;
+  const bpm = parseInt(match[1], 10);
+  return bpm >= 60 && bpm <= 220 ? bpm : FIXED_BPM;
+};
+
 let pulseRafId: number | null = null;
 
 export interface SCSound {
@@ -82,7 +93,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
         if (!sound) return;
         set({
           trackTitle: sound.title ?? 'UNTITLED',
-          bpm: FIXED_BPM,
+          bpm: parseBpmFromTitle(sound.title),
           duration: sound.duration ?? 0,
         });
       });

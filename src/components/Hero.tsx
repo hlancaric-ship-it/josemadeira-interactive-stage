@@ -7,6 +7,7 @@ import { translations } from '../i18n/translations';
 import { LangSwitch } from './LangSwitch';
 import { GlowLogo } from './GlowLogo';
 import joseAvatar from '../assets/jose-avatar.jpg';
+import logoReal from '../assets/logo-real.svg';
 
 export const Hero = ({ onEnter }: { onEnter: () => void }) => {
   const [, setEntering] = useState(false);
@@ -38,7 +39,7 @@ export const Hero = ({ onEnter }: { onEnter: () => void }) => {
     <div className="hero-overlay" style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
       <nav className="fixed top-0 left-0 right-0 z-10 grid grid-cols-[1fr_auto_1fr] items-center px-5 py-5 sm:px-8 sm:py-7 mono text-[11px] tracking-[3px] text-white/50">
         <span />
-        <span className="justify-self-center">JOSEMADEIRA</span>
+        <img src={logoReal} alt="Jose Madeira" className="justify-self-center h-3 w-auto opacity-90" />
         <div className="flex items-center justify-end gap-8">
           <div className="hidden sm:flex gap-8">
             <span className="hover:text-[#C81E2C] transition-colors">{t.nav.tour}</span>
