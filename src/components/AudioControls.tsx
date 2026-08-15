@@ -47,7 +47,7 @@ const Waveform = ({ onSeek }: { onSeek: (ratio: number) => void }) => {
       bars.forEach((bar, i) => {
         const n = i / (WAVE_BARS - 1);
         const played = n <= progress;
-        const wobble = isPlaying ? Math.sin(time * (bpm / 90) + seeds[i].phase) * 0.5 + 0.5 : 0.3;
+        const wobble = isPlaying ? Math.sin(time * ((bpm ?? 128) / 90) + seeds[i].phase) * 0.5 + 0.5 : 0.3;
         const h = Math.max(0.12, seeds[i].base + wobble * 0.5);
         // scaleY (GPU-composited) instead of height (forces layout every frame on 48 elements)
         bar.style.transform = `scaleY(${h})`;
@@ -109,7 +109,7 @@ export const AudioControls = () => {
           </div>
 
           <div className="shrink-0 text-right">
-            <div className="mono text-lg font-bold text-[#C81E2C] tabular-nums leading-none">{bpm.toFixed(0)}</div>
+            <div className="mono text-lg font-bold text-[#C81E2C] tabular-nums leading-none">{bpm !== null ? bpm.toFixed(0) : '—'}</div>
           </div>
         </div>
 

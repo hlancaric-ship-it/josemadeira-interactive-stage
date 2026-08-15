@@ -46,7 +46,7 @@ const BPMStats = () => {
           </div>
           <div className="flex items-baseline gap-2">
             <span className="mono text-xs text-white/50">BPM</span>
-            <span className="text-5xl font-black tabular-nums tracking-[-2px]">{bpm}</span>
+            <span className="text-5xl font-black tabular-nums tracking-[-2px]">{bpm ?? '—'}</span>
           </div>
           <div className="mt-2 h-px bg-white/10 w-full" />
           <div className="flex justify-between items-center mt-2">
@@ -66,7 +66,7 @@ const BPMStats = () => {
         <div className="bg-black/60 backdrop-blur-md border border-white/10 px-3.5 py-2 rounded-sm flex items-center gap-2.5">
           <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${isPlaying ? 'bg-[#C81E2C] animate-pulse' : 'bg-white/20'}`} />
           <span className="mono text-[9px] text-white/50 tracking-[1px]">BPM</span>
-          <span className="text-lg font-black tabular-nums tracking-[-1px] leading-none">{bpm}</span>
+          <span className="text-lg font-black tabular-nums tracking-[-1px] leading-none">{bpm ?? '—'}</span>
         </div>
       </div>
     </>
@@ -145,7 +145,7 @@ const AboutSection = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="mono text-xs sm:text-sm tracking-[4px] sm:tracking-[6px] text-[#C81E2C] mb-5 sm:mb-7 lg:mb-3">{t.origins.label}</div>
-          <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-6">{t.origins.title1}<br/>{t.origins.title2}</ScrollShrinkHeading>
+          <ScrollShrinkHeading direction="right" className="text-6xl font-black tracking-[-2px] mb-6">{t.origins.title1}<br/>{t.origins.title2}</ScrollShrinkHeading>
           <div className="space-y-5 sm:space-y-7 lg:space-y-2 text-gray-400 font-light leading-relaxed text-base sm:text-lg md:text-xl lg:text-sm mb-8 sm:mb-12 lg:mb-4">
             <p>{t.origins.p1}</p>
             <p>{t.origins.p2}</p>
@@ -223,7 +223,7 @@ const CollaboratorsSection = () => {
       >
         {t.collab.eyebrow}
       </motion.div>
-      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-10">
+      <ScrollShrinkHeading direction="left" className="text-6xl font-black tracking-[-2px] mb-10">
         {t.collab.title}
       </ScrollShrinkHeading>
 
@@ -282,7 +282,7 @@ const StreamingSection = () => {
       >
         {t.streaming.eyebrow}
       </motion.div>
-      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-8">
+      <ScrollShrinkHeading direction="right" className="text-6xl font-black tracking-[-2px] mb-8">
         {t.streaming.title}
       </ScrollShrinkHeading>
 
@@ -343,7 +343,7 @@ const ContactSection = () => {
       >
         {t.contact.eyebrow}
       </motion.div>
-      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-8">
+      <ScrollShrinkHeading direction="left" className="text-6xl font-black tracking-[-2px] mb-8">
         {t.contact.title}
       </ScrollShrinkHeading>
 
@@ -386,7 +386,7 @@ const MusicSection = () => {
       >
         {t.discography.label}
       </motion.div>
-      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-10">
+      <ScrollShrinkHeading direction="right" className="text-6xl font-black tracking-[-2px] mb-10">
         {t.discography.title}
       </ScrollShrinkHeading>
 
@@ -467,15 +467,29 @@ const MainStage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           id="panel-hero"
-          className="hstage-panel relative z-20 lg:min-h-screen px-6 md:px-16 pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-36 md:pb-24 group"
+          className="hstage-panel relative z-20 min-h-screen px-6 md:px-16 pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-36 md:pb-24 group flex flex-col justify-center lg:block"
         >
           {/* oversized ghost numeral for asymmetric depth */}
           <div className="pointer-events-none select-none absolute top-[6%] right-[4%] text-[240px] md:text-[420px] font-black leading-none text-white/[0.025] hidden md:block">
             54
           </div>
 
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-y-10 lg:gap-y-14 items-center justify-items-center lg:min-h-[60vh]">
-            <div className="text-center lg:text-left">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-y-10 lg:gap-y-14 items-center justify-items-center lg:min-h-[60vh] relative">
+            {/* Mobile: coin-flip portrait sits behind the logo, which flies over it on scroll */}
+            <div className="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-0" style={{ opacity: 0.8 }}>
+              <div className="portrait-wrap w-[220px]">
+                <div className="coin-flip">
+                  <div className="portrait-ring" />
+                  <img
+                    src={joseAvatar}
+                    alt="Jose Madeira"
+                    className="w-full aspect-square rounded-full object-cover border border-[#C9A227]/25 shadow-[0_30px_70px_rgba(0,0,0,0.65)]"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center lg:text-left relative z-10">
               <div className="inline-flex items-center gap-2 mono text-[11px] tracking-[5px] text-[#C81E2C] mb-7">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C81E2C] shadow-[0_0_8px_#C81E2C]" />
                 {t.liveOnSoundcloud}

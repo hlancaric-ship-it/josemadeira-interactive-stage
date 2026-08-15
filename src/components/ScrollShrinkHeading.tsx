@@ -7,14 +7,24 @@ import { motion } from 'framer-motion';
  * than a scroll-position-linked transform, since MainStage scrolls
  * horizontally on desktop (see HorizontalStage) — a window-scrollY-linked
  * animation would never progress there and the heading would stay invisible. */
-export const ScrollShrinkHeading = ({ children, className = '' }: { children: ReactNode; className?: string }) => {
+export const ScrollShrinkHeading = ({
+  children,
+  className = '',
+  direction = 'left',
+}: {
+  children: ReactNode;
+  className?: string;
+  direction?: 'left' | 'right';
+}) => {
+  const offset = direction === 'left' ? -48 : 48;
+
   return (
     <motion.h2
-      initial={{ opacity: 0, scale: 1.28, x: -48 }}
+      initial={{ opacity: 0, scale: 1.28, x: offset }}
       whileInView={{ opacity: 1, scale: 1, x: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      style={{ transformOrigin: 'left center' }}
+      style={{ transformOrigin: direction === 'left' ? 'left center' : 'right center' }}
       className={className}
     >
       {children}

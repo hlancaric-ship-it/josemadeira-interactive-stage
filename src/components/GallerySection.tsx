@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useLangStore } from '../store/langStore';
 import { translations } from '../i18n/translations';
 import { fetchFeed, mediaUrl, type FeedItem } from '../lib/feedApi';
+import { ScrollShrinkHeading } from './ScrollShrinkHeading';
 
 export const GallerySection = () => {
   const { lang } = useLangStore();
@@ -24,7 +25,7 @@ export const GallerySection = () => {
   }, []);
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -34,15 +35,9 @@ export const GallerySection = () => {
       >
         {t.gallery.eyebrow}
       </motion.div>
-      <motion.h2
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.7, delay: 0.05 }}
-        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-4"
-      >
+      <ScrollShrinkHeading direction="right" className="text-6xl font-black tracking-[-2px] mb-8">
         {t.gallery.title}
-      </motion.h2>
+      </ScrollShrinkHeading>
 
       {items.length === 0 ? (
         <div className="mono text-sm text-gray-500 tracking-[2px]">{t.gallery.empty}</div>

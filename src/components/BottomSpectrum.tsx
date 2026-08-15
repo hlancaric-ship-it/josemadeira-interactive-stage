@@ -37,6 +37,7 @@ export const BottomSpectrum = () => {
         speed: 0.5 + Math.random() * 1.1,
         // dome envelope: taller near center, tapering at the edges — reads as "modern EQ", not a flat wall of blocks
         envelope: Math.pow(Math.sin(Math.PI * n), 0.7) * 0.7 + 0.3,
+        bandPos: Math.abs(n - 0.5) * 2, // 0 center (bass) -> 1 edges (treble)
         value: 0,
       };
     });
@@ -60,10 +61,10 @@ export const BottomSpectrum = () => {
 
       for (let i = 0; i < BAR_COUNT; i++) {
         const bar = bars[i];
-        // Shared beat pulse drives every bar together; a light per-bar
-        // shimmer keeps it from looking perfectly uniform.
-        const shimmer = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.07;
-        const target = Math.max(0.012, beat * 0.95 + shimmer) * bar.envelope;
+        // EQ-like band character: center bars ride the real kick pulse
+        // (bass, slow), edge bars flicker on their own faster cycle (treble).
+        const treble = Math.sin(time * (5 + bar.speed * 5) * ((bpm ?? 128) / 128) + bar.phase) * 0.5 + 0.5;
+        const target = Math.max(0.012, beat * (1 - bar.bandPos) * 0.95 + treble * bar.bandPos * 0.75) * bar.envelope;
         bar.value = lerp(bar.value, target, 0.22);
 
         const h = Math.max(2, bar.value * maxH);

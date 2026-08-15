@@ -1,17 +1,18 @@
 import { create } from 'zustand';
 import { buildWidgetSrc } from '../lib/soundcloud';
 
-const FIXED_BPM = 128;
+// SoundCloud's embed API exposes no raw audio to analyze, and the iframe is
+// cross-origin so Web Audio API access is out — there is no way to detect
+// real BPM client-side. Only show a number when the DJ tags it in the track
+// title; otherwise it's unknown, not a guess.
+const ANIMATION_BPM = 128; // purely for animation timing (spectrum/pulse speed), never displayed as fact
 
-/** SoundCloud's embed API exposes no raw audio to analyze — no way to detect real BPM
- * client-side. Parse it from the track title when the DJ tags it (common practice);
- * otherwise fall back to the house-standard 128. */
-const parseBpmFromTitle = (title: string | undefined): number => {
-  if (!title) return FIXED_BPM;
+const parseBpmFromTitle = (title: string | undefined): number | null => {
+  if (!title) return null;
   const match = title.match(/(\d{2,3})\s*bpm/i);
-  if (!match) return FIXED_BPM;
+  if (!match) return null;
   const bpm = parseInt(match[1], 10);
-  return bpm >= 60 && bpm <= 220 ? bpm : FIXED_BPM;
+  return bpm >= 60 && bpm <= 220 ? bpm : null;
 };
 
 let pulseRafId: number | null = null;
@@ -34,7 +35,7 @@ interface AudioStore {
   iframeEl: HTMLIFrameElement | null;
   isReady: boolean;
   isPlaying: boolean;
-  bpm: number;
+  bpm: number | null;
   frequency: number;
   position: number;
   duration: number;
@@ -78,7 +79,7 @@ const startPulseLoop = (
     }
 
     const t = position / 1000;
-    const beatPhase = (t * (bpm / 60)) % 1;
+    const beatPhase = (t * ((bpm ?? ANIMATION_BPM) / 60)) % 1;
     const kick = Math.pow(Math.max(0, Math.sin(beatPhase * Math.PI)), 3);
     const drift = Math.sin(t * 0.7) * 0.15 + Math.sin(t * 1.9) * 0.08;
     const target = Math.min(1, Math.max(0.08, kick * 0.85 + drift + 0.15));
@@ -95,7 +96,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   iframeEl: null,
   isReady: false,
   isPlaying: false,
-  bpm: FIXED_BPM,
+  bpm: null,
   frequency: 0,
   position: 0,
   duration: 0,

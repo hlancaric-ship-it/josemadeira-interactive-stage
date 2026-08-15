@@ -56,16 +56,17 @@ export const SpectrumVisualizer = () => {
 
       for (let i = 0; i < BAR_COUNT; i++) {
         const bar = bars[i];
-        // Shared beat pulse drives every bar together (so it reads as one
-        // track pulsing, not scattered random spikes); a small per-bar
-        // shimmer on top keeps it from looking perfectly uniform.
-        const shimmer = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.08;
 
         // dome-shaped envelope: taller near the center, tapering toward the edges
         const n = i / (BAR_COUNT - 1);
         const envelope = Math.pow(Math.sin(Math.PI * n), 0.6) * 0.6 + 0.4;
 
-        const target = Math.max(0.015, beat * 0.95 + shimmer + bar.base * 0.1) * envelope;
+        // EQ-like band character: center bars ride the real kick pulse
+        // (bass, slow), edge bars flicker on their own faster cycle
+        // (treble) — reads as a real spectrum, not one block moving as one.
+        const bandPos = Math.abs(n - 0.5) * 2; // 0 center -> 1 edges
+        const treble = Math.sin(time * (5 + bar.speed * 5) * ((bpm ?? 128) / 128) + bar.phase) * 0.5 + 0.5;
+        const target = Math.max(0.015, beat * (1 - bandPos) * 0.95 + treble * bandPos * 0.8 + bar.base * 0.08) * envelope;
         bar.value = lerp(bar.value, target, 0.22);
 
         const h = Math.max(3, bar.value * maxH);
