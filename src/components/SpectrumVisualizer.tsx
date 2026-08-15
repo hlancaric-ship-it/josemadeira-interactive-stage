@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useAudioStore } from '../store/audioStore';
 
-const BAR_COUNT_DESKTOP = 96;
-const BAR_COUNT_MOBILE = 48;
+const BAR_COUNT_DESKTOP = 160;
+const BAR_COUNT_MOBILE = 80;
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -48,28 +48,34 @@ export const SpectrumVisualizer = () => {
       const { frequency, bpm, isPlaying } = useAudioStore.getState();
       ctx.clearRect(0, 0, cssW, cssH);
 
-      const gap = 3;
+      const gap = 1.5;
       const barW = cssW / BAR_COUNT;
       const time = t * 0.001;
-      const energy = isPlaying ? frequency : 0.04;
-      const maxH = cssH * 0.94;
+      const beat = isPlaying ? frequency : 0.05;
+      const maxH = cssH;
 
       for (let i = 0; i < BAR_COUNT; i++) {
         const bar = bars[i];
-        const wobble = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.5 + 0.5;
+        // Shared beat pulse drives every bar together (so it reads as one
+        // track pulsing, not scattered random spikes); a small per-bar
+        // shimmer on top keeps it from looking perfectly uniform.
+        const shimmer = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.08;
 
         // dome-shaped envelope: taller near the center, tapering toward the edges
         const n = i / (BAR_COUNT - 1);
         const envelope = Math.pow(Math.sin(Math.PI * n), 0.6) * 0.6 + 0.4;
 
-        const target = (bar.base + wobble * 0.85 * (0.3 + energy)) * envelope;
-        bar.value = lerp(bar.value, target, 0.16);
+        const target = Math.max(0.015, beat * 0.95 + shimmer + bar.base * 0.1) * envelope;
+        bar.value = lerp(bar.value, target, 0.22);
 
         const h = Math.max(3, bar.value * maxH);
         const x = i * barW + gap / 2;
         const w = Math.max(1, barW - gap);
         const y = cssH - h;
-        const r = Math.min(w / 2, 3);
+        const r = Math.min(w / 2, 1.5);
+
+        // Taller bars fade out more — the higher a peak reaches, the lighter it gets.
+        ctx.globalAlpha = 1 - Math.min(1, bar.value) * 0.6;
 
         const gradient = ctx.createLinearGradient(0, cssH, 0, y);
         gradient.addColorStop(0, 'rgba(200,30,44,0.95)');

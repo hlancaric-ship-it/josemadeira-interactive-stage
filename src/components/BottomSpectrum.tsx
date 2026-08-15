@@ -42,7 +42,7 @@ export const BottomSpectrum = () => {
     });
 
     let rafId: number;
-    const gapRatio = 0.3; // thin bars, generous gap — the "not blocky" look
+    const gapRatio = 0.45; // finer bars, more visible gap
 
     const draw = (t: number) => {
       if (document.hidden) {
@@ -55,19 +55,24 @@ export const BottomSpectrum = () => {
       const barSlot = cssW / BAR_COUNT;
       const w = Math.max(1, barSlot * (1 - gapRatio));
       const time = t * 0.001;
-      const energy = isPlaying ? frequency : 0.03;
-      const maxH = HEIGHT * 0.92;
+      const beat = isPlaying ? frequency : 0.04;
+      const maxH = HEIGHT;
 
       for (let i = 0; i < BAR_COUNT; i++) {
         const bar = bars[i];
-        const wobble = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.5 + 0.5;
-        const target = (0.06 + wobble * 0.8 * (0.45 + energy * 1.3)) * bar.envelope;
-        bar.value = lerp(bar.value, target, 0.16);
+        // Shared beat pulse drives every bar together; a light per-bar
+        // shimmer keeps it from looking perfectly uniform.
+        const shimmer = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.07;
+        const target = Math.max(0.012, beat * 0.95 + shimmer) * bar.envelope;
+        bar.value = lerp(bar.value, target, 0.22);
 
         const h = Math.max(2, bar.value * maxH);
         const x = i * barSlot + (barSlot - w) / 2;
         const y = HEIGHT - h;
-        const r = Math.min(w / 2, 4);
+        const r = Math.min(w / 2, 2);
+
+        // Taller bars fade out more.
+        ctx.globalAlpha = 1 - Math.min(1, bar.value) * 0.6;
 
         const gradient = ctx.createLinearGradient(0, HEIGHT, 0, y);
         gradient.addColorStop(0, 'rgba(200,30,44,0.9)');
