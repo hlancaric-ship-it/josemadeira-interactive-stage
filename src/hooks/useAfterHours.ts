@@ -6,19 +6,17 @@ export const useAfterHours = () => {
   const [isAfterHours, setIsAfterHours] = useState(false);
 
   useEffect(() => {
+    // Deliberately does NOT touch document.documentElement: a `filter` on any
+    // ancestor (including <html>) creates a new containing block for
+    // `position: fixed` descendants, which broke the fixed nav/hamburger
+    // site-wide. Callers apply the `.after-hours` class themselves, scoped
+    // to an element that has no fixed-positioned descendants.
     const check = () => {
       const h = new Date().getHours();
       const timeActive = h >= 2 && h < 5;
       // Finding the "madeira" secret grants permanent after-hours access,
       // not just the 2am-5am window.
-      const active = unlocked || timeActive;
-      setIsAfterHours(active);
-
-      if (active) {
-        document.documentElement.classList.add('after-hours');
-      } else {
-        document.documentElement.classList.remove('after-hours');
-      }
+      setIsAfterHours(unlocked || timeActive);
     };
     check();
     const iv = setInterval(check, 60000);

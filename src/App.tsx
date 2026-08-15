@@ -89,7 +89,7 @@ const TourSection = () => {
       >
         {t.movement.year}
       </motion.div>
-      <ScrollShrinkHeading className="text-5xl sm:text-6xl md:text-8xl lg:text-6xl font-black tracking-[-2px] md:tracking-[-5px] mb-10 md:mb-16 lg:mb-4">
+      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-10">
         {t.movement.title}
       </ScrollShrinkHeading>
 
@@ -145,7 +145,7 @@ const AboutSection = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="mono text-xs sm:text-sm tracking-[4px] sm:tracking-[6px] text-[#C81E2C] mb-5 sm:mb-7 lg:mb-3">{t.origins.label}</div>
-          <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-7xl lg:text-4xl font-bold tracking-[-1px] md:tracking-[-2px] mb-6 sm:mb-10 lg:mb-4">{t.origins.title1}<br/>{t.origins.title2}</ScrollShrinkHeading>
+          <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-6">{t.origins.title1}<br/>{t.origins.title2}</ScrollShrinkHeading>
           <div className="space-y-5 sm:space-y-7 lg:space-y-2 text-gray-400 font-light leading-relaxed text-base sm:text-lg md:text-xl lg:text-sm mb-8 sm:mb-12 lg:mb-4">
             <p>{t.origins.p1}</p>
             <p>{t.origins.p2}</p>
@@ -223,7 +223,7 @@ const CollaboratorsSection = () => {
       >
         {t.collab.eyebrow}
       </motion.div>
-      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-10 md:mb-16 lg:mb-6">
+      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-10">
         {t.collab.title}
       </ScrollShrinkHeading>
 
@@ -282,7 +282,7 @@ const StreamingSection = () => {
       >
         {t.streaming.eyebrow}
       </motion.div>
-      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-4">
+      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-8">
         {t.streaming.title}
       </ScrollShrinkHeading>
 
@@ -343,7 +343,7 @@ const ContactSection = () => {
       >
         {t.contact.eyebrow}
       </motion.div>
-      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-6">
+      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-8">
         {t.contact.title}
       </ScrollShrinkHeading>
 
@@ -386,7 +386,7 @@ const MusicSection = () => {
       >
         {t.discography.label}
       </motion.div>
-      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-10 md:mb-16 lg:mb-4">
+      <ScrollShrinkHeading className="text-6xl font-black tracking-[-2px] mb-10">
         {t.discography.title}
       </ScrollShrinkHeading>
 
@@ -447,7 +447,7 @@ const MainStage = () => {
   const t = translations[lang];
 
   return (
-    <div className={`relative min-h-screen bg-[#0A0808] text-white ${isAfterHours ? 'after-hours' : ''}`}>
+    <div className="relative min-h-screen bg-[#0A0808] text-white">
       <BackgroundPhotos />
       <StageAtmosphere />
       <BottomSpectrum />
@@ -459,6 +459,7 @@ const MainStage = () => {
 
       <MainNav />
 
+      <div className={isAfterHours ? 'after-hours' : ''}>
       <HorizontalStage>
         {/* Main hero title — asymmetric composition */}
         <motion.div
@@ -480,7 +481,14 @@ const MainStage = () => {
                 {t.liveOnSoundcloud}
               </div>
 
-              <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
+              <motion.div
+                initial={{ opacity: 0, scale: 2.4, x: -40 }}
+                whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
+              </motion.div>
 
               <div className="mt-8 flex items-center justify-center lg:justify-start gap-4 text-xs mono tracking-[3px] text-white/45">
                 <div className="w-12 h-px bg-gradient-to-r from-[#C9A227] via-[#C81E2C] to-transparent" />
@@ -526,6 +534,7 @@ const MainStage = () => {
         {/* Photo/video gallery from IG/FB/TikTok, synced via Telegram */}
         <div id="panel-gallery" className="hstage-panel"><GallerySection /></div>
       </HorizontalStage>
+      </div>
 
       {/* Footer — pinned outside the horizontal scroll, not one of the panels */}
       <footer className="relative lg:fixed lg:bottom-0 lg:left-0 lg:right-0 z-[45] border-t border-white/5 py-12 lg:py-4 px-8 flex flex-col md:flex-row justify-between items-center text-[10px] mono tracking-[4px] text-gray-500 bg-black/70 backdrop-blur-md">
