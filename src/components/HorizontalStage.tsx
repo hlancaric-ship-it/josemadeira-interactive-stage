@@ -22,11 +22,29 @@ export const HorizontalStage = ({ children }: { children: React.ReactNode }) => 
 
     let locked = false;
     let unlockTimer: number;
+    let scrollRaf: number;
+
+    const SCROLL_DURATION = 900; // ms — native `behavior: 'smooth'` was too quick/abrupt to control directly
+    const easeInOutCubic = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+    const animateScrollTo = (target: number) => {
+      cancelAnimationFrame(scrollRaf);
+      const start = el.scrollLeft;
+      const distance = target - start;
+      const startTime = performance.now();
+
+      const step = (now: number) => {
+        const elapsed = Math.min(1, (now - startTime) / SCROLL_DURATION);
+        el.scrollLeft = start + distance * easeInOutCubic(elapsed);
+        if (elapsed < 1) scrollRaf = requestAnimationFrame(step);
+      };
+      scrollRaf = requestAnimationFrame(step);
+    };
 
     const goToPanel = (index: number) => {
       const panelCount = el.children.length;
       const clamped = Math.min(Math.max(index, 0), panelCount - 1);
-      el.scrollTo({ left: clamped * window.innerWidth, behavior: 'smooth' });
+      animateScrollTo(clamped * window.innerWidth);
     };
 
     const onWheel = (e: WheelEvent) => {
@@ -42,13 +60,14 @@ export const HorizontalStage = ({ children }: { children: React.ReactNode }) => 
       window.clearTimeout(unlockTimer);
       unlockTimer = window.setTimeout(() => {
         locked = false;
-      }, 650);
+      }, SCROLL_DURATION + 50);
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
     return () => {
       window.removeEventListener('wheel', onWheel);
       window.clearTimeout(unlockTimer);
+      cancelAnimationFrame(scrollRaf);
     };
   }, [isDesktop]);
 
