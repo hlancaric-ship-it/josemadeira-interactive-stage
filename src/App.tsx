@@ -519,20 +519,6 @@ const MainStage = () => {
           </div>
 
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-y-10 lg:gap-y-14 items-center justify-items-center lg:min-h-[60vh] relative">
-            {/* Mobile: coin-flip portrait sits behind the logo, which flies over it on scroll */}
-            <div className="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-0" style={{ opacity: 0.8 }}>
-              <div className="portrait-wrap w-[220px]">
-                <div className="coin-flip">
-                  <div className="portrait-ring" />
-                  <img
-                    src={joseAvatar}
-                    alt="Jose Madeira"
-                    className="w-full aspect-square rounded-full object-cover border border-[#C9A227]/25 shadow-[0_30px_70px_rgba(0,0,0,0.65)]"
-                  />
-                </div>
-              </div>
-            </div>
-
             <div className="text-center lg:text-left relative z-10">
               <div className="inline-flex items-center gap-2 mono text-[11px] tracking-[5px] text-[#C81E2C] mb-7">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C81E2C] shadow-[0_0_8px_#C81E2C]" />
@@ -543,8 +529,23 @@ const MainStage = () => {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="relative"
               >
-                <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
+                {/* Mobile: coin-flip portrait centered directly behind the logo */}
+                <div className="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-0" style={{ opacity: 0.8 }}>
+                  <div className="portrait-wrap w-[220px]">
+                    <div className="coin-flip">
+                      <div className="portrait-ring" />
+                      <img
+                        src={joseAvatar}
+                        alt="Jose Madeira"
+                        className="w-full aspect-square rounded-full object-cover border border-[#C9A227]/25 shadow-[0_30px_70px_rgba(0,0,0,0.65)]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <GlowLogo className="relative z-10 w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
               </motion.div>
 
               <div className="mt-8 flex items-center justify-center lg:justify-start gap-4 text-xs mono tracking-[3px] text-white/45">
