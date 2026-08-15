@@ -560,7 +560,7 @@ const MainStage = () => {
               </motion.div>
 
               {/* Mobile: social icons row, right under the hero instead of buried at the page bottom */}
-              <div className="lg:hidden mt-[120px] flex items-center justify-center gap-5">
+              <div className="lg:hidden mt-[160px] flex items-center justify-center gap-5">
                 {socialLinks.map((s) => (
                   <a
                     key={s.key}
