@@ -25,7 +25,7 @@ export const GallerySection = () => {
   }, []);
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-12 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}

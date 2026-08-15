@@ -14,7 +14,7 @@ export const translations = {
     enterVibe: 'ENTER THE VIBE',
     archives: 'NAPIŠ "MADEIRA" PRO ARCHIVY',
     audioReactiveStage: 'ŽIVĚ NA SOUNDCLOUDU — AUDIO REAKTIVNÍ PÓDIUM',
-    movement: { year: '2026', title: 'THE MOVEMENT' },
+    movement: { year: '2026', title: 'NADCHÁZEJÍCÍ AKCE' },
     origins: {
       label: 'PŮVOD',
       title1: 'O',
@@ -75,7 +75,7 @@ export const translations = {
     enterVibe: 'ENTER THE VIBE',
     archives: 'TYPE "MADEIRA" FOR ARCHIVES',
     audioReactiveStage: 'LIVE ON SOUNDCLOUD — AUDIO REACTIVE STAGE',
-    movement: { year: '2026', title: 'THE MOVEMENT' },
+    movement: { year: '2026', title: 'UPCOMING EVENTS' },
     origins: {
       label: 'ORIGINS',
       title1: 'ABOUT',

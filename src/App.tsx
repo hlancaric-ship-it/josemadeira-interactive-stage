@@ -123,7 +123,7 @@ const TourSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-8 pb-14 pt-8 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-8 pb-20 pt-12 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -180,7 +180,7 @@ const AboutSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-12 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-14 md:gap-20 lg:gap-10 items-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -257,7 +257,7 @@ const CollaboratorsSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-12 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -316,7 +316,7 @@ const StreamingSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-12 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -377,7 +377,7 @@ const ContactSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-28 pt-12 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -420,7 +420,7 @@ const MusicSection = () => {
   const visible = sounds.slice(0, 6);
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-36 pt-8 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-20 sm:pb-36 pt-12 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
