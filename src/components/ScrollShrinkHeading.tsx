@@ -22,7 +22,7 @@ export const ScrollShrinkHeading = ({
     <motion.h2
       initial={{ opacity: 0, scale: 1.28, x: offset }}
       whileInView={{ opacity: 1, scale: 1, x: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ once: true, margin: '0px 0px -220px 0px' }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       style={{ transformOrigin: direction === 'left' ? 'left center' : 'right center' }}
       className={className}
