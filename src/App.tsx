@@ -15,6 +15,7 @@ import { Preloader } from './components/Preloader';
 import { GlitchOverlay } from './components/GlitchOverlay';
 import { AudioControls } from './components/AudioControls';
 import { SoundCloudPlayer } from './components/SoundCloudPlayer';
+import { ScrollShrinkHeading } from './components/ScrollShrinkHeading';
 import { CookieConsent } from './components/CookieConsent';
 import { useCookieConsentStore } from './store/cookieConsentStore';
 import { MainNav } from './components/MainNav';
@@ -78,7 +79,7 @@ const TourSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-8 pb-44 pt-16 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-8 pb-14 pt-8 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -88,15 +89,9 @@ const TourSection = () => {
       >
         {t.movement.year}
       </motion.div>
-      <motion.h2
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.7, delay: 0.05 }}
-        className="text-5xl sm:text-6xl md:text-8xl lg:text-6xl font-black tracking-[-2px] md:tracking-[-5px] mb-10 md:mb-16 lg:mb-4"
-      >
+      <ScrollShrinkHeading className="text-5xl sm:text-6xl md:text-8xl lg:text-6xl font-black tracking-[-2px] md:tracking-[-5px] mb-10 md:mb-16 lg:mb-4">
         {t.movement.title}
-      </motion.h2>
+      </ScrollShrinkHeading>
 
       <div className="grid grid-cols-2 gap-3 sm:block sm:space-y-[1px] sm:gap-0">
         {tourDates.map((date, i) => (
@@ -141,7 +136,7 @@ const AboutSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-14 md:gap-20 lg:gap-10 items-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -150,7 +145,7 @@ const AboutSection = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="mono text-xs sm:text-sm tracking-[4px] sm:tracking-[6px] text-[#C81E2C] mb-5 sm:mb-7 lg:mb-3">{t.origins.label}</div>
-          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-4xl font-bold tracking-[-1px] md:tracking-[-2px] mb-6 sm:mb-10 lg:mb-4">{t.origins.title1}<br/>{t.origins.title2}</h2>
+          <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-7xl lg:text-4xl font-bold tracking-[-1px] md:tracking-[-2px] mb-6 sm:mb-10 lg:mb-4">{t.origins.title1}<br/>{t.origins.title2}</ScrollShrinkHeading>
           <div className="space-y-5 sm:space-y-7 lg:space-y-2 text-gray-400 font-light leading-relaxed text-base sm:text-lg md:text-xl lg:text-sm mb-8 sm:mb-12 lg:mb-4">
             <p>{t.origins.p1}</p>
             <p>{t.origins.p2}</p>
@@ -218,7 +213,7 @@ const CollaboratorsSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -228,15 +223,9 @@ const CollaboratorsSection = () => {
       >
         {t.collab.eyebrow}
       </motion.div>
-      <motion.h2
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.7, delay: 0.05 }}
-        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-10 md:mb-16 lg:mb-6"
-      >
+      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-10 md:mb-16 lg:mb-6">
         {t.collab.title}
-      </motion.h2>
+      </ScrollShrinkHeading>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -283,7 +272,7 @@ const StreamingSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -293,15 +282,9 @@ const StreamingSection = () => {
       >
         {t.streaming.eyebrow}
       </motion.div>
-      <motion.h2
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.7, delay: 0.05 }}
-        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-4"
-      >
+      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-4">
         {t.streaming.title}
-      </motion.h2>
+      </ScrollShrinkHeading>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:gap-4 max-w-4xl">
         <motion.div
@@ -350,7 +333,7 @@ const ContactSection = () => {
   const t = translations[lang];
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-28 pt-16 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-28 pt-8 sm:pt-24 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -360,15 +343,9 @@ const ContactSection = () => {
       >
         {t.contact.eyebrow}
       </motion.div>
-      <motion.h2
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.7, delay: 0.05 }}
-        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-6"
-      >
+      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-8 md:mb-16 lg:mb-6">
         {t.contact.title}
-      </motion.h2>
+      </ScrollShrinkHeading>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -399,7 +376,7 @@ const MusicSection = () => {
   const visible = sounds.slice(0, 6);
 
   return (
-    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-44 sm:pb-36 pt-16 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
+    <section className="relative z-30 max-w-6xl mx-auto px-6 sm:px-8 pb-14 sm:pb-36 pt-8 lg:h-screen lg:flex lg:flex-col lg:justify-start lg:pb-6 lg:pt-28">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -409,15 +386,9 @@ const MusicSection = () => {
       >
         {t.discography.label}
       </motion.div>
-      <motion.h2
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.7, delay: 0.05 }}
-        className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-10 md:mb-16 lg:mb-4"
-      >
+      <ScrollShrinkHeading className="text-4xl sm:text-5xl md:text-8xl lg:text-5xl font-black tracking-[-1px] md:tracking-[-3px] mb-10 md:mb-16 lg:mb-4">
         {t.discography.title}
-      </motion.h2>
+      </ScrollShrinkHeading>
 
       {visible.length === 0 ? (
         <div className="mono text-sm text-gray-500 tracking-[2px]">{t.player.connecting}</div>
