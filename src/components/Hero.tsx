@@ -37,7 +37,7 @@ export const Hero = ({ onEnter }: { onEnter: () => void }) => {
 
   return (
     <div className="hero-overlay" style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
-      <nav className="fixed top-0 left-0 right-0 z-10 grid grid-cols-[1fr_auto_1fr] items-center px-5 py-5 sm:px-8 sm:py-7 mono text-[11px] tracking-[3px] text-white/50">
+      <nav className="hidden sm:grid fixed top-0 left-0 right-0 z-10 grid-cols-[1fr_auto_1fr] items-center px-5 py-5 sm:px-8 sm:py-7 mono text-[11px] tracking-[3px] text-white/50">
         <span />
         <img src={logoReal} alt="Jose Madeira" className="justify-self-center h-3 w-auto opacity-90" />
         <div className="flex items-center justify-end gap-8">
