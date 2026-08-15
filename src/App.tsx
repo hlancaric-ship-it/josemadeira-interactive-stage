@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { useAudioStore } from './store/audioStore';
 import { useKonamiCode } from './hooks/useKonamiCode';
 import { useAfterHours } from './hooks/useAfterHours';
@@ -490,6 +490,18 @@ const MainStage = () => {
   const { lang } = useLangStore();
   const t = translations[lang];
 
+  const heroPanelRef = useRef<HTMLDivElement>(null);
+  // Base value at scroll progress 0 is scale:1/opacity:1 (normal, always visible) —
+  // if this never advances (e.g. desktop's horizontal HorizontalStage scroll,
+  // where window scrollY doesn't move), the logo just stays normally visible
+  // instead of getting stuck hidden like the earlier scroll-linked attempt did.
+  const { scrollYProgress: heroScrollProgress } = useScroll({
+    target: heroPanelRef,
+    offset: ['start start', 'end start'],
+  });
+  const logoZoomScale = useTransform(heroScrollProgress, [0, 1], [1, 5]);
+  const logoZoomOpacity = useTransform(heroScrollProgress, [0, 0.7], [1, 0]);
+
   return (
     <div className="relative min-h-screen bg-[#0A0808] text-white">
       <BackgroundPhotos />
@@ -507,6 +519,7 @@ const MainStage = () => {
       <HorizontalStage>
         {/* Main hero title — asymmetric composition */}
         <motion.div
+          ref={heroPanelRef}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
@@ -541,11 +554,13 @@ const MainStage = () => {
                   </div>
                 </div>
 
-                <GlowLogo className="relative z-10 w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
+                <motion.div style={{ scale: logoZoomScale, opacity: logoZoomOpacity }} className="relative z-10">
+                  <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
+                </motion.div>
               </motion.div>
 
               {/* Mobile: social icons row, right under the hero instead of buried at the page bottom */}
-              <div className="lg:hidden mt-[84px] flex items-center justify-center gap-5">
+              <div className="lg:hidden mt-[120px] flex items-center justify-center gap-5">
                 {socialLinks.map((s) => (
                   <a
                     key={s.key}
