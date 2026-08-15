@@ -24,8 +24,9 @@ export interface SCSound {
   genre: string;
 }
 
-const storedVolume = typeof window !== 'undefined' ? parseInt(localStorage.getItem('madeira_volume') ?? '', 10) : NaN;
-const INITIAL_VOLUME = Number.isFinite(storedVolume) && storedVolume >= 0 && storedVolume <= 100 ? storedVolume : 80;
+// Session-only: volume/mute reset to the default on every fresh visit
+// rather than remembering a previous "silenced" state via localStorage.
+const INITIAL_VOLUME = 80;
 
 interface AudioStore {
   widget: any | null;
@@ -154,7 +155,6 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   setIframeEl: (el) => set({ iframeEl: el }),
   setVolume: (volume) => {
     const clamped = Math.max(0, Math.min(100, volume));
-    localStorage.setItem('madeira_volume', String(clamped));
     set({ volume: clamped, muted: clamped === 0 });
     get().widget?.setVolume(clamped);
   },
