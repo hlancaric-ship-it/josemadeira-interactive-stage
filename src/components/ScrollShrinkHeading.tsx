@@ -1,21 +1,20 @@
-import { useRef, type ReactNode } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import type { ReactNode } from 'react';
+import { motion } from 'framer-motion';
 
-/** Apple/Nike-style scroll effect: the heading enters oversized and off to
- * the side, then shrinks to its natural size and settles into place as it
- * scrolls up through the viewport. */
+/** Apple/Nike-style entrance: the heading starts oversized and offset to the
+ * side, then shrinks to its natural size and slides into place once it
+ * scrolls into view. Triggered via IntersectionObserver (whileInView) rather
+ * than a scroll-position-linked transform, since MainStage scrolls
+ * horizontally on desktop (see HorizontalStage) — a window-scrollY-linked
+ * animation would never progress there and the heading would stay invisible. */
 export const ScrollShrinkHeading = ({ children, className = '' }: { children: ReactNode; className?: string }) => {
-  const ref = useRef<HTMLHeadingElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start 0.4'] });
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1.28, 1]);
-  const x = useTransform(scrollYProgress, [0, 1], [-48, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
-
   return (
     <motion.h2
-      ref={ref}
-      style={{ scale, x, opacity, transformOrigin: 'left center' }}
+      initial={{ opacity: 0, scale: 1.28, x: -48 }}
+      whileInView={{ opacity: 1, scale: 1, x: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      style={{ transformOrigin: 'left center' }}
       className={className}
     >
       {children}
