@@ -520,33 +520,29 @@ const MainStage = () => {
 
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-y-10 lg:gap-y-14 items-center justify-items-center lg:min-h-[60vh] relative">
             <div className="text-center lg:text-left relative z-10">
-              {/* Mobile: coin-flip portrait, separate from the logo (not stacked on top of it) */}
-              <div className="lg:hidden flex justify-center mb-6" style={{ opacity: 0.8 }}>
-                <div className="portrait-wrap w-[160px]">
-                  <div className="coin-flip">
-                    <div className="portrait-ring" />
-                    <img
-                      src={joseAvatar}
-                      alt="Jose Madeira"
-                      className="w-full aspect-square rounded-full object-cover border border-[#C9A227]/25 shadow-[0_30px_70px_rgba(0,0,0,0.65)]"
-                    />
-                  </div>
-                </div>
-              </div>
-
               <motion.div
                 initial={{ opacity: 0, scale: 1.3 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.7, ease: 'easeOut' }}
+                className="relative"
               >
-                <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
-              </motion.div>
+                {/* Mobile: coin-flip portrait, logo centered on top of it */}
+                <div className="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-0" style={{ opacity: 0.8 }}>
+                  <div className="portrait-wrap w-[220px]">
+                    <div className="coin-flip">
+                      <div className="portrait-ring" />
+                      <img
+                        src={joseAvatar}
+                        alt="Jose Madeira"
+                        className="w-full aspect-square rounded-full object-cover border border-[#C9A227]/25 shadow-[0_30px_70px_rgba(0,0,0,0.65)]"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-              <div className="mt-8 flex items-center justify-center lg:justify-start gap-4 text-xs mono tracking-[3px] text-white/45">
-                <div className="w-12 h-px bg-gradient-to-r from-[#C9A227] via-[#C81E2C] to-transparent" />
-                {t.audioReactiveStage}
-              </div>
+                <GlowLogo className="relative z-10 w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
+              </motion.div>
 
               {/* Mobile: social icons row, right under the hero instead of buried at the page bottom */}
               <div className="lg:hidden mt-[84px] flex items-center justify-center gap-5">
