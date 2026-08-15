@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { useAudioStore } from './store/audioStore';
 import { useKonamiCode } from './hooks/useKonamiCode';
 import { useAfterHours } from './hooks/useAfterHours';
+import { useMediaSession } from './hooks/useMediaSession';
 import { BackgroundPhotos } from './components/BackgroundPhotos';
 import { StageAtmosphere } from './components/StageAtmosphere';
 import { BottomSpectrum } from './components/BottomSpectrum';
@@ -487,6 +488,7 @@ const MusicSection = () => {
 const MainStage = () => {
   const { showGlitch } = useKonamiCode();
   const { isAfterHours } = useAfterHours();
+  useMediaSession();
   const { lang } = useLangStore();
   const t = translations[lang];
 
