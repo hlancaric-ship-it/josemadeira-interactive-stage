@@ -14,7 +14,7 @@ export const useKonamiCode = () => {
       seq = [...seq, k].slice(-target.length);
       if (seq.join('') === target.join('')) {
         unlock();
-        setTimeout(hideGlitch, 2100);
+        setTimeout(hideGlitch, 4000);
         seq = [];
       }
     };
