@@ -235,11 +235,6 @@ h2 {
 }
 @keyframes spin-slow { to { transform: rotate(360deg); } }
 
-@media (prefers-reduced-motion: reduce) {
-  .portrait-ring { animation: none; }
-  .coin-flip { animation: none; }
-}
-
 /* Club haze — slow drifting smoke, dead-room atmosphere not a toy */
 .haze-blob {
   position: absolute;
@@ -328,4 +323,36 @@ h2 {
   .hstage-panel::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Volume slider — native range input reskinned to match the LCD player */
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #C81E2C;
+  box-shadow: 0 0 4px rgba(200,30,44,0.8), 0 0 0 2px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+.volume-slider::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border: none;
+  border-radius: 50%;
+  background: #C81E2C;
+  box-shadow: 0 0 4px rgba(200,30,44,0.8), 0 0 0 2px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+.volume-slider::-moz-range-track {
+  height: 4px;
+  background: transparent;
 }

@@ -16,7 +16,6 @@ export const BottomSpectrum = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const BAR_COUNT = window.innerWidth < 768 ? BAR_COUNT_MOBILE : BAR_COUNT_DESKTOP;
     let dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.5 : 2);
     let cssW = window.innerWidth;
@@ -55,7 +54,7 @@ export const BottomSpectrum = () => {
 
       const barSlot = cssW / BAR_COUNT;
       const w = Math.max(1, barSlot * (1 - gapRatio));
-      const time = reduced ? 0 : t * 0.001;
+      const time = t * 0.001;
       const energy = isPlaying ? frequency : 0.03;
       const maxH = HEIGHT * 0.92;
 
@@ -63,7 +62,7 @@ export const BottomSpectrum = () => {
         const bar = bars[i];
         const wobble = Math.sin(time * bar.speed * (bpm / 120) + bar.phase) * 0.5 + 0.5;
         const target = (0.06 + wobble * 0.8 * (0.45 + energy * 1.3)) * bar.envelope;
-        bar.value = lerp(bar.value, target, reduced ? 1 : 0.16);
+        bar.value = lerp(bar.value, target, 0.16);
 
         const h = Math.max(2, bar.value * maxH);
         const x = i * barSlot + (barSlot - w) / 2;
@@ -91,7 +90,7 @@ export const BottomSpectrum = () => {
         }
       }
 
-      if (!reduced) rafId = requestAnimationFrame(draw);
+      rafId = requestAnimationFrame(draw);
     };
 
     rafId = requestAnimationFrame(draw);

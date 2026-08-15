@@ -80,7 +80,7 @@ const Waveform = ({ onSeek }: { onSeek: (ratio: number) => void }) => {
 };
 
 export const AudioControls = () => {
-  const { isReady, isPlaying, bpm, trackTitle, position, duration, toggle, next, prev, seek } = useAudioStore();
+  const { isReady, isPlaying, bpm, trackTitle, position, duration, toggle, next, prev, seek, volume, muted, setVolume, toggleMute } = useAudioStore();
   const { lang } = useLangStore();
   const t = translations[lang];
 
@@ -157,6 +157,29 @@ export const AudioControls = () => {
           >
             <span className="text-xs">⏭</span>
           </button>
+        </div>
+
+        {/* Volume */}
+        <div className="relative flex items-center gap-2.5 px-4 pb-3">
+          <button
+            onClick={toggleMute}
+            aria-label={muted ? 'Unmute' : 'Mute'}
+            className="w-6 h-6 shrink-0 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+          >
+            <span className="text-xs">{muted || volume === 0 ? '🔇' : volume < 50 ? '🔉' : '🔊'}</span>
+          </button>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={muted ? 0 : volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            aria-label="Volume"
+            className="volume-slider flex-1 h-1"
+            style={{
+              background: `linear-gradient(to right, #C81E2C ${muted ? 0 : volume}%, rgba(255,255,255,0.12) ${muted ? 0 : volume}%)`,
+            }}
+          />
         </div>
       </div>
     </div>

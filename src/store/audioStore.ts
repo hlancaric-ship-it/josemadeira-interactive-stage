@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { buildWidgetSrc } from '../lib/soundcloud';
 
 const FIXED_BPM = 128;
 
@@ -23,8 +24,12 @@ export interface SCSound {
   genre: string;
 }
 
+const storedVolume = typeof window !== 'undefined' ? parseInt(localStorage.getItem('madeira_volume') ?? '', 10) : NaN;
+const INITIAL_VOLUME = Number.isFinite(storedVolume) && storedVolume >= 0 && storedVolume <= 100 ? storedVolume : 80;
+
 interface AudioStore {
   widget: any | null;
+  iframeEl: HTMLIFrameElement | null;
   isReady: boolean;
   isPlaying: boolean;
   bpm: number;
@@ -34,8 +39,19 @@ interface AudioStore {
   trackTitle: string;
   sounds: SCSound[];
   currentIndex: number;
+  volume: number;
+  muted: boolean;
 
   setWidget: (widget: any) => void;
+  setIframeEl: (el: HTMLIFrameElement | null) => void;
+  setVolume: (volume: number) => void;
+  toggleMute: () => void;
+  /** Reloads the SoundCloud iframe with auto_play=true as a direct, synchronous
+   * result of a user gesture. Safari does not carry user-activation across the
+   * postMessage boundary into a cross-origin iframe, so calling widget.play()
+   * on an already-loaded iframe can silently fail there; a gesture-triggered
+   * navigation of the iframe itself is honored instead. */
+  hardStart: () => void;
   play: () => void;
   pause: () => void;
   toggle: () => void;
@@ -74,6 +90,7 @@ const startPulseLoop = (
 
 export const useAudioStore = create<AudioStore>((set, get) => ({
   widget: null,
+  iframeEl: null,
   isReady: false,
   isPlaying: false,
   bpm: FIXED_BPM,
@@ -83,10 +100,13 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   trackTitle: 'LOADING SIGNAL…',
   sounds: [],
   currentIndex: 0,
+  volume: INITIAL_VOLUME,
+  muted: false,
 
   setWidget: (widget) => {
     set({ widget });
     const SC = (window as any).SC;
+    widget.setVolume(get().muted ? 0 : get().volume);
 
     const syncCurrentSound = () => {
       widget.getCurrentSound((sound: any) => {
@@ -129,6 +149,25 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e: { currentPosition: number }) => {
       set({ position: e.currentPosition });
     });
+  },
+
+  setIframeEl: (el) => set({ iframeEl: el }),
+  setVolume: (volume) => {
+    const clamped = Math.max(0, Math.min(100, volume));
+    localStorage.setItem('madeira_volume', String(clamped));
+    set({ volume: clamped, muted: clamped === 0 });
+    get().widget?.setVolume(clamped);
+  },
+  toggleMute: () => {
+    const { muted, volume, widget } = get();
+    const next = !muted;
+    set({ muted: next });
+    widget?.setVolume(next ? 0 : volume);
+  },
+  hardStart: () => {
+    const { iframeEl } = get();
+    if (!iframeEl) return;
+    iframeEl.src = buildWidgetSrc(true);
   },
 
   play: () => get().widget?.play(),

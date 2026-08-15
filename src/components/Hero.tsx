@@ -11,13 +11,13 @@ import logoReal from '../assets/logo-real.svg';
 
 export const Hero = ({ onEnter }: { onEnter: () => void }) => {
   const [, setEntering] = useState(false);
-  const { play } = useAudioStore();
+  const { hardStart } = useAudioStore();
   const { lang } = useLangStore();
   const t = translations[lang];
 
   const handleEnter = async () => {
     setEntering(true);
-    play();
+    hardStart();
 
     const tl = gsap.timeline({ onComplete: onEnter });
 
@@ -90,9 +90,7 @@ export const Hero = ({ onEnter }: { onEnter: () => void }) => {
             >
               {t.enterVibe}
             </button>
-            <span className="mono text-sm tracking-[2px] text-white/50 border-b border-white/20 pb-1 hover:text-white hover:border-[#C81E2C] transition-colors cursor-pointer">
-              {t.listenSoundcloud}
-            </span>
+            <LangSwitch />
           </div>
         </div>
 
@@ -119,10 +117,6 @@ export const Hero = ({ onEnter }: { onEnter: () => void }) => {
             />
           </div>
         </motion.div>
-      </div>
-
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 mono text-[10px] text-white/30 tracking-[4px]">
-        {t.archives}
       </div>
     </div>
   );

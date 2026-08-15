@@ -5,20 +5,34 @@ import { loadWidgetAPI, WIDGET_SRC } from '../lib/soundcloud';
 export const SoundCloudPlayer = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const setWidget = useAudioStore((s) => s.setWidget);
+  const setIframeEl = useAudioStore((s) => s.setIframeEl);
 
   useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    setIframeEl(iframe);
+
     let cancelled = false;
 
-    loadWidgetAPI().then(() => {
-      if (cancelled || !iframeRef.current) return;
-      const widget = (window as any).SC.Widget(iframeRef.current);
-      setWidget(widget);
-    });
+    // Rebinds on every load, not just the first — hardStart() reloads this
+    // iframe's src to force autoplay on Safari, which needs a fresh SC.Widget().
+    const bind = () => {
+      loadWidgetAPI().then(() => {
+        if (cancelled || !iframeRef.current) return;
+        const widget = (window as any).SC.Widget(iframeRef.current);
+        setWidget(widget);
+      });
+    };
+
+    bind();
+    iframe.addEventListener('load', bind);
 
     return () => {
       cancelled = true;
+      iframe.removeEventListener('load', bind);
+      setIframeEl(null);
     };
-  }, [setWidget]);
+  }, [setWidget, setIframeEl]);
 
   return (
     <iframe

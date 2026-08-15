@@ -2,7 +2,10 @@ let apiLoadPromise: Promise<void> | null = null;
 
 export const PROFILE_URL = 'https://soundcloud.com/josemadeiraofficial';
 
-export const WIDGET_SRC = `https://w.soundcloud.com/player/?url=${encodeURIComponent(PROFILE_URL)}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false&color=%23c9a227`;
+export const buildWidgetSrc = (autoplay: boolean) =>
+  `https://w.soundcloud.com/player/?url=${encodeURIComponent(PROFILE_URL)}&auto_play=${autoplay}&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false&color=%23c9a227`;
+
+export const WIDGET_SRC = buildWidgetSrc(false);
 
 export function loadWidgetAPI(): Promise<void> {
   if (apiLoadPromise) return apiLoadPromise;

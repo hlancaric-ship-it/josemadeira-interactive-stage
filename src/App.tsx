@@ -15,6 +15,8 @@ import { Preloader } from './components/Preloader';
 import { GlitchOverlay } from './components/GlitchOverlay';
 import { AudioControls } from './components/AudioControls';
 import { SoundCloudPlayer } from './components/SoundCloudPlayer';
+import { CookieConsent } from './components/CookieConsent';
+import { useCookieConsentStore } from './store/cookieConsentStore';
 import { MainNav } from './components/MainNav';
 import { useLangStore } from './store/langStore';
 import { translations } from './i18n/translations';
@@ -582,10 +584,12 @@ const MainStage = () => {
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [entered, setEntered] = useState(false);
+  const consent = useCookieConsentStore((s) => s.consent);
 
   return (
     <>
-      <SoundCloudPlayer />
+      {consent === 'accepted' && <SoundCloudPlayer />}
+      <CookieConsent />
 
       <AnimatePresence>
         {!loaded && <Preloader onDone={() => setLoaded(true)} />}

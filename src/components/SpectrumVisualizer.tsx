@@ -15,7 +15,6 @@ export const SpectrumVisualizer = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const BAR_COUNT = window.innerWidth < 768 ? BAR_COUNT_MOBILE : BAR_COUNT_DESKTOP;
     let dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.5 : 2);
     let cssW = window.innerWidth;
@@ -51,7 +50,7 @@ export const SpectrumVisualizer = () => {
 
       const gap = 3;
       const barW = cssW / BAR_COUNT;
-      const time = reduced ? 0 : t * 0.001;
+      const time = t * 0.001;
       const energy = isPlaying ? frequency : 0.04;
       const maxH = cssH * 0.94;
 
@@ -64,7 +63,7 @@ export const SpectrumVisualizer = () => {
         const envelope = Math.pow(Math.sin(Math.PI * n), 0.6) * 0.6 + 0.4;
 
         const target = (bar.base + wobble * 0.85 * (0.3 + energy)) * envelope;
-        bar.value = lerp(bar.value, target, reduced ? 1 : 0.16);
+        bar.value = lerp(bar.value, target, 0.16);
 
         const h = Math.max(3, bar.value * maxH);
         const x = i * barW + gap / 2;
@@ -99,7 +98,7 @@ export const SpectrumVisualizer = () => {
         ctx.fillRect(x, cssH, w, Math.min(24, h * 0.25));
       }
 
-      if (!reduced) rafId = requestAnimationFrame(draw);
+      rafId = requestAnimationFrame(draw);
     };
 
     rafId = requestAnimationFrame(draw);

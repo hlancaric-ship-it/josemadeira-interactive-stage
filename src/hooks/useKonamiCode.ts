@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useSecretStore } from '../store/secretStore';
 
 export const useKonamiCode = () => {
-  const [showGlitch, setShowGlitch] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
+  const { showGlitch, unlocked, unlock, hideGlitch } = useSecretStore();
 
   useEffect(() => {
-    if (localStorage.getItem('madeira_secret') === '1') {
-      setUnlocked(true);
-    }
-
     let seq: string[] = [];
     const target = ['m', 'a', 'd', 'e', 'i', 'r', 'a'];
 
@@ -17,17 +13,15 @@ export const useKonamiCode = () => {
       if (!k.match(/[a-z]/)) return;
       seq = [...seq, k].slice(-target.length);
       if (seq.join('') === target.join('')) {
-        setShowGlitch(true);
-        setUnlocked(true);
-        localStorage.setItem('madeira_secret', '1');
-        setTimeout(() => setShowGlitch(false), 2100);
+        unlock();
+        setTimeout(hideGlitch, 2100);
         seq = [];
       }
     };
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, []);
+  }, [unlock, hideGlitch]);
 
   return { showGlitch, unlocked };
 };
