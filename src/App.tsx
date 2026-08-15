@@ -467,7 +467,7 @@ const MainStage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           id="panel-hero"
-          className="hstage-panel relative z-20 min-h-screen px-6 md:px-16 pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-36 md:pb-24 group flex flex-col justify-center lg:block"
+          className="hstage-panel relative z-20 min-h-screen px-6 md:px-16 pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-36 md:pb-24 group flex flex-col justify-center -translate-y-16 sm:translate-y-0 lg:block lg:translate-y-0"
         >
           {/* oversized ghost numeral for asymmetric depth */}
           <div className="pointer-events-none select-none absolute top-[6%] right-[4%] text-[240px] md:text-[420px] font-black leading-none text-white/[0.025] hidden md:block">
@@ -498,7 +498,7 @@ const MainStage = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 2.4, x: -40 }}
                 whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
+                viewport={{ once: false, margin: '-40px' }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
               >
                 <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
