@@ -497,7 +497,7 @@ const MainStage = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 2.4, x: -40 }}
                 whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                viewport={{ once: false, margin: '-40px' }}
+                viewport={{ once: false, amount: 0.6 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
               >
                 <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
