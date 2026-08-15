@@ -22,6 +22,57 @@ import { useLangStore } from './store/langStore';
 import { translations } from './i18n/translations';
 import joseAvatar from './assets/jose-avatar.jpg';
 
+const socialLinks = [
+  {
+    key: 'facebook',
+    href: 'https://www.facebook.com/josemadeiraofficialnew/',
+    icon: (
+      <path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.2-1.5 1.5-1.5H16.5V4.2C16.2 4.2 15.2 4 14 4c-2.5 0-4 1.5-4 4.3V10.5H7.5v3H10V21h3.5z" />
+    ),
+  },
+  {
+    key: 'soundcloud',
+    href: 'https://soundcloud.com/josemadeiraofficial',
+    icon: (
+      <path d="M9 17V9.5a.5.5 0 0 0-1 0V17h1zm-2.3 0v-5.8a.4.4 0 0 0-.8 0V17h.8zm4.6 0V8a.5.5 0 0 0-1 0v9h1zm2.3 0v-9a.5.5 0 0 0-1 0v9h1zm2.4 0v-6.5c0-2 1.6-3.5 3.6-3.5 1.9 0 3.5 1.5 3.6 3.4a2.9 2.9 0 0 1 1-.2c1.6 0 2.8 1.3 2.8 2.9 0 1.5-1.2 2.8-2.7 2.9H16z" />
+    ),
+  },
+  {
+    key: 'instagram',
+    href: 'https://www.instagram.com/josemadeiraofficialnew',
+    icon: (
+      <path d="M12 4c-2.2 0-2.5 0-3.4.05-.9.05-1.5.2-2 .4a4 4 0 0 0-1.5 1 4 4 0 0 0-1 1.5c-.2.5-.35 1.1-.4 2C3.65 9.9 3.65 10.2 3.65 12s0 2.1.05 3.05c.05.9.2 1.5.4 2a4 4 0 0 0 1 1.5 4 4 0 0 0 1.5 1c.5.2 1.1.35 2 .4.9.05 1.2.05 3.4.05s2.5 0 3.4-.05c.9-.05 1.5-.2 2-.4a4 4 0 0 0 1.5-1 4 4 0 0 0 1-1.5c.2-.5.35-1.1.4-2 .05-.95.05-1.25.05-3.05s0-2.1-.05-3.05c-.05-.9-.2-1.5-.4-2a4 4 0 0 0-1-1.5 4 4 0 0 0-1.5-1c-.5-.2-1.1-.35-2-.4C14.5 4 14.2 4 12 4zm0 1.8c2.15 0 2.4 0 3.3.05.8.04 1.2.16 1.5.28.37.14.63.31.9.58.27.27.44.53.58.9.12.3.24.7.28 1.5.05.9.05 1.15.05 3.3s0 2.4-.05 3.3c-.04.8-.16 1.2-.28 1.5-.14.37-.31.63-.58.9-.27.27-.53.44-.9.58-.3.12-.7.24-1.5.28-.9.05-1.15.05-3.3.05s-2.4 0-3.3-.05c-.8-.04-1.2-.16-1.5-.28a2.4 2.4 0 0 1-.9-.58 2.4 2.4 0 0 1-.58-.9c-.12-.3-.24-.7-.28-1.5-.05-.9-.05-1.15-.05-3.3s0-2.4.05-3.3c.04-.8.16-1.2.28-1.5.14-.37.31-.63.58-.9.27-.27.53-.44.9-.58.3-.12.7-.24 1.5-.28.9-.05 1.15-.05 3.3-.05zm0 3.1a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2zm0 5.1a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3.95-5.3a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5z" />
+    ),
+  },
+  {
+    key: 'youtube',
+    href: 'https://www.youtube.com/@josemadeiraofficial',
+    icon: (
+      <path d="M21.6 8.3a2.6 2.6 0 0 0-1.8-1.8C18.1 6 12 6 12 6s-6.1 0-7.8.5a2.6 2.6 0 0 0-1.8 1.8C2 10 2 12 2 12s0 2 .4 3.7c.2.9.9 1.6 1.8 1.8C5.9 18 12 18 12 18s6.1 0 7.8-.5a2.6 2.6 0 0 0 1.8-1.8c.4-1.7.4-3.7.4-3.7s0-2-.4-3.7zM10 15V9l5.2 3-5.2 3z" />
+    ),
+  },
+  {
+    key: 'spotify',
+    href: 'https://open.spotify.com/artist/0Gr1t69ZXhohsB8dwj4sLr',
+    icon: (
+      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.6.6 0 0 1-.85.2c-2.3-1.4-5.3-1.75-8.7-.95a.62.62 0 1 1-.3-1.2c3.75-.85 7-.45 9.6 1.1.3.2.4.6.25.85zm1.2-2.75a.75.75 0 0 1-1.05.25c-2.65-1.6-6.7-2.1-9.8-1.15a.78.78 0 0 1-.45-1.5c3.55-1.1 8-.55 11.05 1.35.35.2.5.7.25 1.05zm.1-2.85C14.5 8.9 9.5 8.7 6.6 9.6a.9.9 0 1 1-.55-1.75c3.35-1 8.9-.8 12.4 1.25a.93.93 0 0 1-.55 1.7z" />
+    ),
+  },
+  {
+    key: 'appleMusic',
+    href: 'https://music.apple.com/cz/artist/josemadeira/1814103021',
+    icon: (
+      <path d="M16.7 4.3c-.35.4-.9.7-1.45.65a1.85 1.85 0 0 1 .5-1.45c.35-.4.95-.7 1.45-.7.05.55-.15 1.1-.5 1.5zM17.2 5.5c-.8-.05-1.5.45-1.9.45-.4 0-1-.4-1.65-.4-.85 0-1.65.5-2.1 1.25-.9 1.55-.25 3.85.65 5.1.45.6.95 1.3 1.65 1.28.65-.03.9-.42 1.7-.42.8 0 1 .42 1.7.4.7-.02 1.15-.62 1.6-1.22.5-.7.7-1.35.7-1.4-.02 0-1.35-.5-1.35-2 0-1.25 1-1.85 1.05-1.9-.6-.85-1.5-.95-1.85-.95v-.19zM10.5 8v9.3c0 .55-.4.95-.95.95-.5 0-.9-.4-.9-.9s.4-.9.9-.9c.1 0 .2 0 .3.03V9l-2.7.55v6.75c0 .55-.4.95-.9.95-.5 0-.9-.4-.9-.9s.4-.9.9-.9c.1 0 .2 0 .3.03V9l4.85-1v.5-.5z" />
+    ),
+  },
+] as const;
+
+const SocialIcon = ({ children }: { children: React.ReactNode }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+    {children}
+  </svg>
+);
+
 const tourDates = [
   { id: '1', city: 'PRAGUE', venue: 'Studio 54', date: '16.08', country: 'CZ' },
   { id: '2', city: 'PRAGUE', venue: 'Studio 54', date: '30.08', country: 'CZ' },
@@ -438,7 +489,6 @@ const MainStage = () => {
   const { isAfterHours } = useAfterHours();
   const { lang } = useLangStore();
   const t = translations[lang];
-  const [heroLogoInView, setHeroLogoInView] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-[#0A0808] text-white">
@@ -490,12 +540,9 @@ const MainStage = () => {
               </div>
 
               <motion.div
-                initial={{ opacity: 0, scale: 2.4, x: -40 }}
-                animate={heroLogoInView ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 2.4, x: -40 }}
-                onViewportEnter={() => setHeroLogoInView(true)}
-                onViewportLeave={() => setHeroLogoInView(false)}
-                viewport={{ amount: 0.2 }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
               >
                 <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />
               </motion.div>
@@ -503,6 +550,22 @@ const MainStage = () => {
               <div className="mt-8 flex items-center justify-center lg:justify-start gap-4 text-xs mono tracking-[3px] text-white/45">
                 <div className="w-12 h-px bg-gradient-to-r from-[#C9A227] via-[#C81E2C] to-transparent" />
                 {t.audioReactiveStage}
+              </div>
+
+              {/* Mobile: social icons row, right under the hero instead of buried at the page bottom */}
+              <div className="lg:hidden mt-7 flex items-center justify-center gap-5">
+                {socialLinks.map((s) => (
+                  <a
+                    key={s.key}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={s.key}
+                    className="w-8 h-8 text-white/50 hover:text-[#C81E2C] transition-colors"
+                  >
+                    <SocialIcon>{s.icon}</SocialIcon>
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -549,7 +612,7 @@ const MainStage = () => {
       {/* Footer — pinned outside the horizontal scroll, not one of the panels */}
       <footer className="relative lg:fixed lg:bottom-0 lg:left-0 lg:right-0 z-[45] border-t border-white/5 py-12 lg:py-4 px-8 flex flex-col md:flex-row justify-between items-center text-[10px] mono tracking-[4px] text-gray-500 bg-black/70 backdrop-blur-md">
         <div>{t.footer.rights}</div>
-        <div className="flex gap-10 mt-6 md:mt-0">
+        <div className="hidden lg:flex gap-10 mt-6 md:mt-0">
           <a href="https://www.facebook.com/josemadeiraofficialnew/" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">FACEBOOK</a>
           <a href="https://soundcloud.com/josemadeiraofficial" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">SOUNDCLOUD</a>
           <a href="https://www.instagram.com/josemadeiraofficialnew" target="_blank" rel="noreferrer" className="hover:text-[#C81E2C] transition-colors">INSTAGRAM</a>
