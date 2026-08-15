@@ -35,6 +35,7 @@ export const GlitchOverlay = ({ active }: Props) => {
           </div>
           <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[10000] text-center">
             <div className="text-[#7A1220] mono text-sm tracking-[4px] mb-2">SECRET UNLOCKED</div>
+            <div className="text-[#C9A227] mono text-xs tracking-[3px] mb-4">AFTER MODE ON</div>
             <a
               href="https://soundcloud.com/josemadeiraofficial"
               target="_blank"
