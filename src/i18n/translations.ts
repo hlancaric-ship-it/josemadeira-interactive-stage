@@ -2,7 +2,7 @@ export const translations = {
   cs: {
     nav: { tour: 'TOUR', music: 'HUDBA', about: 'O MNĚ', soundcloud: 'SOUNDCLOUD', collab: 'SPOLUPRÁCE', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALERIE', contact: 'KONTAKT' },
     liveOnSoundcloud: 'ŽIVĚ NA SOUNDCLOUDU',
-    bio: 'Czech house/techhouse after DJ&Live remixer. Rezidentní DJ legendárního klubu Studio 54 Praha, tvůrce afterparty House Friends.',
+    bio: 'Czech house/techhouse after DJ&Live remixer. Rezidentní DJ legendárního klubu Studio 54 Praha, tvůrce a hostitel afterparty série House Friends běžící od roku 2022.',
     stats: {
       genre: 'Žánr',
       genreValue: 'House/Techhouse',
@@ -19,8 +19,8 @@ export const translations = {
       label: 'PŮVOD',
       title1: 'ARCHITEKT',
       title2: 'ZVUKU',
-      p1: 'Czech house/techhouse after DJ&Live remixer, Jose Madeira si vybudoval reputaci jako rezidentní DJ legendárního klubu Studio 54 v Praze — proslulého afterclubu.',
-      p2: 'Jako tvůrce afterparty House Friends míchá jeho sety hluboké, tažné house groove s energií after-hours davu, kterému se nechce domů.',
+      p1: 'Czech house/techhouse after DJ&Live remixer, Jose Madeira si vybudoval reputaci jako rezidentní DJ legendárního klubu Studio 54 v Praze — proslulého afterclubu. Je stálicí i na největších výročních akcích klubu, včetně b2b setů s rezidenty DJ Sylon a Cobra na 22. a 23. narozeninách Studia 54.',
+      p2: 'Jako tvůrce a hostitel afterparty série House Friends, která běží nepřetržitě od roku 2022, mixuje hluboké, tažné house groove s energií after-hours davu, kterému se nechce domů. Svou tvorbu navíc pravidelně představuje ve vlastním podcastu Jose Madeira Vibes, dostupném na Apple Podcasts, Amazon Music a iHeart.',
       bioLines: [
         'Czech house/techhouse after DJ&Live remixer',
         'Rezidentní DJ legendárního klubu Studio 54 Praha',
@@ -63,7 +63,7 @@ export const translations = {
   en: {
     nav: { tour: 'TOUR', music: 'MUSIC', about: 'ABOUT', soundcloud: 'SOUNDCLOUD', collab: 'COLLABORATORS', streaming: 'STREAMING', feed: 'FEED', gallery: 'GALLERY', contact: 'CONTACT' },
     liveOnSoundcloud: 'LIVE ON SOUNDCLOUD',
-    bio: 'Czech house/techhouse after DJ&Live remixer. Resident DJ at the legendary Studio 54 Prague, creator of the House Friends afterparties.',
+    bio: 'Czech house/techhouse after DJ&Live remixer. Resident DJ at the legendary Studio 54 Prague, creator and host of the House Friends afterparty series running since 2022.',
     stats: {
       genre: 'Genre',
       genreValue: 'House/Techhouse',
@@ -80,8 +80,8 @@ export const translations = {
       label: 'ORIGINS',
       title1: 'THE ARCHITECT',
       title2: 'OF SOUND',
-      p1: "Czech house/techhouse after DJ&Live remixer, Jose Madeira built his reputation as resident DJ at the legendary Studio 54 in Prague — the city's storied afterclub.",
-      p2: "As creator of the House Friends afterparties, his sets blend deep, driving house grooves with the raw energy of an after-hours crowd that doesn't want the night to end.",
+      p1: "Czech house/techhouse after DJ&Live remixer, Jose Madeira built his reputation as resident DJ at the legendary Studio 54 in Prague — the city's storied afterclub. He's a fixture at the club's biggest annual nights too, including back-to-back sets with fellow residents DJ Sylon and Cobra at Studio 54's 22nd and 23rd anniversary parties.",
+      p2: "As creator and host of the House Friends afterparty series, running continuously since 2022, his sets blend deep, driving house grooves with the raw energy of an after-hours crowd that doesn't want the night to end. He also shares his sound through his own podcast, Jose Madeira Vibes, available on Apple Podcasts, Amazon Music, and iHeart.",
       bioLines: [
         'Czech house/techhouse after DJ&Live remixer',
         'Resident DJ at the legendary Studio 54 Prague',
