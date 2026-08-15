@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useAudioStore } from '../store/audioStore';
 
-const BAR_COUNT_DESKTOP = 160;
-const BAR_COUNT_MOBILE = 80;
+const BAR_COUNT_DESKTOP = 320;
+const BAR_COUNT_MOBILE = 160;
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -35,6 +35,9 @@ export const SpectrumVisualizer = () => {
       phase: Math.random() * Math.PI * 2,
       speed: 0.4 + Math.random() * 1.3,
       base: 0.06 + Math.random() * 0.16,
+      spikePhase: Math.random() * Math.PI * 2,
+      spikeSpeed: 0.15 + Math.random() * 0.6,
+      spikeAmp: 0.4 + Math.random() * 0.9,
       value: 0,
     }));
 
@@ -48,7 +51,7 @@ export const SpectrumVisualizer = () => {
       const { frequency, bpm, isPlaying } = useAudioStore.getState();
       ctx.clearRect(0, 0, cssW, cssH);
 
-      const gap = 1.5;
+      const gap = 1;
       const barW = cssW / BAR_COUNT;
       const time = t * 0.001;
       const beat = isPlaying ? frequency : 0.05;
@@ -66,8 +69,11 @@ export const SpectrumVisualizer = () => {
         // (treble) — reads as a real spectrum, not one block moving as one.
         const bandPos = Math.abs(n - 0.5) * 2; // 0 center -> 1 edges
         const treble = Math.sin(time * (5 + bar.speed * 5) * ((bpm ?? 128) / 128) + bar.phase) * 0.5 + 0.5;
-        const target = Math.max(0.015, beat * (1 - bandPos) * 0.95 + treble * bandPos * 0.8 + bar.base * 0.08) * envelope;
-        bar.value = lerp(bar.value, target, 0.22);
+        // Occasional sharp per-bar spikes — high power sine makes most bars
+        // sit low with irregular tips popping up unevenly, not a smooth wave.
+        const spike = Math.pow(Math.max(0, Math.sin(time * bar.spikeSpeed + bar.spikePhase)), 10) * bar.spikeAmp;
+        const target = Math.max(0.015, beat * (1 - bandPos) * 0.85 + treble * bandPos * 0.7 + spike * beat + bar.base * 0.08) * envelope;
+        bar.value = lerp(bar.value, target, 0.28);
 
         const h = Math.max(3, bar.value * maxH);
         const x = i * barW + gap / 2;

@@ -11,7 +11,7 @@ export const translations = {
       basedIn: 'Působiště',
       basedInValue: 'Praha, ČR',
     },
-    enterVibe: 'VSTOUPIT DO VIBE',
+    enterVibe: 'ENTER THE VIBE',
     archives: 'NAPIŠ "MADEIRA" PRO ARCHIVY',
     audioReactiveStage: 'ŽIVĚ NA SOUNDCLOUDU — AUDIO REAKTIVNÍ PÓDIUM',
     movement: { year: '2026', title: 'THE MOVEMENT' },

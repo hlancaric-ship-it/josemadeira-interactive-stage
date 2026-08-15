@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useAudioStore } from '../store/audioStore';
 
-const BAR_COUNT_DESKTOP = 160;
-const BAR_COUNT_MOBILE = 80;
+const BAR_COUNT_DESKTOP = 320;
+const BAR_COUNT_MOBILE = 160;
 const HEIGHT = 320; // px — tall, lively wall matching the track's energy
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -38,12 +38,15 @@ export const BottomSpectrum = () => {
         // dome envelope: taller near center, tapering at the edges — reads as "modern EQ", not a flat wall of blocks
         envelope: Math.pow(Math.sin(Math.PI * n), 0.7) * 0.7 + 0.3,
         bandPos: Math.abs(n - 0.5) * 2, // 0 center (bass) -> 1 edges (treble)
+        spikePhase: Math.random() * Math.PI * 2,
+        spikeSpeed: 0.15 + Math.random() * 0.6,
+        spikeAmp: 0.4 + Math.random() * 0.9,
         value: 0,
       };
     });
 
     let rafId: number;
-    const gapRatio = 0.45; // finer bars, more visible gap
+    const gapRatio = 0.55; // finer, needle-like bars
 
     const draw = (t: number) => {
       if (document.hidden) {

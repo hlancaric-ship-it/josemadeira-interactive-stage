@@ -28,7 +28,7 @@ const tourDates = [
 ];
 
 const BPMStats = () => {
-  const { bpm, frequency, isPlaying } = useAudioStore();
+  const { frequency, isPlaying } = useAudioStore();
   const { isAfterHours } = useAfterHours();
   const { lang } = useLangStore();
   const t = translations[lang];
@@ -38,17 +38,12 @@ const BPMStats = () => {
       {/* Desktop: full readout */}
       <div className="fixed top-6 right-6 z-40 hidden lg:block">
         <div className="bg-black/60 backdrop-blur-md border border-white/10 px-6 py-4 rounded-sm">
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-3">
             <div className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-[#C81E2C] animate-pulse' : 'bg-white/20'}`} />
             <span className="mono text-[10px] text-white/50 tracking-[3px]">{isPlaying ? t.liveFeed : t.standby}</span>
             {isAfterHours && <span className="mono text-[10px] text-[#C81E2C] tracking-[2px] ml-2">{t.afterHours}</span>}
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="mono text-xs text-white/50">BPM</span>
-            <span className="text-5xl font-black tabular-nums tracking-[-2px]">{bpm ?? '—'}</span>
-          </div>
-          <div className="mt-2 h-px bg-white/10 w-full" />
-          <div className="flex justify-between items-center mt-2">
+          <div className="mt-3 flex justify-between items-center">
             <span className="mono text-[10px] text-white/50">BASS</span>
             <div className="w-24 h-[2px] bg-white/10 rounded overflow-hidden">
               <div
@@ -64,8 +59,7 @@ const BPMStats = () => {
       <div className="fixed top-[64px] right-4 z-40 lg:hidden">
         <div className="bg-black/60 backdrop-blur-md border border-white/10 px-3.5 py-2 rounded-sm flex items-center gap-2.5">
           <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${isPlaying ? 'bg-[#C81E2C] animate-pulse' : 'bg-white/20'}`} />
-          <span className="mono text-[9px] text-white/50 tracking-[1px]">BPM</span>
-          <span className="text-lg font-black tabular-nums tracking-[-1px] leading-none">{bpm ?? '—'}</span>
+          <span className="mono text-[9px] text-white/50 tracking-[1px]">{isPlaying ? t.liveFeed : t.standby}</span>
         </div>
       </div>
     </>
@@ -444,6 +438,7 @@ const MainStage = () => {
   const { isAfterHours } = useAfterHours();
   const { lang } = useLangStore();
   const t = translations[lang];
+  const [heroLogoInView, setHeroLogoInView] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-[#0A0808] text-white">
@@ -466,7 +461,7 @@ const MainStage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           id="panel-hero"
-          className="hstage-panel relative z-20 min-h-screen px-6 md:px-16 pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-36 md:pb-24 group flex flex-col justify-center -translate-y-16 sm:translate-y-0 lg:block lg:translate-y-0"
+          className="hstage-panel relative z-20 min-h-[90vh] lg:min-h-screen px-6 md:px-16 pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-36 md:pb-24 group flex flex-col justify-center -translate-y-16 sm:translate-y-0 lg:block lg:translate-y-0"
         >
           {/* oversized ghost numeral for asymmetric depth */}
           <div className="pointer-events-none select-none absolute top-[6%] right-[4%] text-[240px] md:text-[420px] font-black leading-none text-white/[0.025] hidden md:block">
@@ -496,8 +491,10 @@ const MainStage = () => {
 
               <motion.div
                 initial={{ opacity: 0, scale: 2.4, x: -40 }}
-                whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
+                animate={heroLogoInView ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 2.4, x: -40 }}
+                onViewportEnter={() => setHeroLogoInView(true)}
+                onViewportLeave={() => setHeroLogoInView(false)}
+                viewport={{ amount: 0.2 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
               >
                 <GlowLogo className="w-full max-w-[560px] mx-auto lg:mx-0 transition-transform duration-700 group-hover:scale-[1.03]" />

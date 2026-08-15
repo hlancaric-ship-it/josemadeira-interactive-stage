@@ -61,7 +61,7 @@ const Waveform = ({ onSeek }: { onSeek: (ratio: number) => void }) => {
 
   return (
     <div
-      className="flex items-end gap-[2px] h-10 cursor-pointer px-0.5"
+      className="flex items-end gap-[2px] h-7 sm:h-10 cursor-pointer px-0.5"
       onClick={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         onSeek(Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)));
@@ -80,7 +80,7 @@ const Waveform = ({ onSeek }: { onSeek: (ratio: number) => void }) => {
 };
 
 export const AudioControls = () => {
-  const { isReady, isPlaying, bpm, trackTitle, position, duration, toggle, next, prev, seek, volume, muted, setVolume, toggleMute } = useAudioStore();
+  const { isReady, isPlaying, trackTitle, position, duration, toggle, next, prev, seek, volume, muted, setVolume, toggleMute } = useAudioStore();
   const { lang } = useLangStore();
   const t = translations[lang];
 
@@ -99,17 +99,13 @@ export const AudioControls = () => {
         }}
       >
         {/* LCD readout row */}
-        <div className="relative flex items-center justify-between gap-3 px-4 pt-2.5 pb-1.5">
+        <div className="relative flex items-center justify-between gap-3 px-4 pt-1.5 sm:pt-2.5 pb-1">
           <div className="min-w-0 flex-1">
             <div className="mono text-[8px] tracking-[2px] text-[#C81E2C] flex items-center gap-1.5 mb-0.5">
               <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-[#C81E2C] animate-pulse shadow-[0_0_6px_#C81E2C]' : 'bg-white/25'}`} />
               {isReady ? (isPlaying ? t.player.live : t.player.paused) : t.player.connecting}
             </div>
             <div className="truncate font-semibold tracking-tight text-[12px] text-white">{trackTitle}</div>
-          </div>
-
-          <div className="shrink-0 text-right">
-            <div className="mono text-lg font-bold text-[#C81E2C] tabular-nums leading-none">{bpm !== null ? bpm.toFixed(0) : '—'}</div>
           </div>
         </div>
 
@@ -127,11 +123,11 @@ export const AudioControls = () => {
         </div>
 
         {/* Transport */}
-        <div className="relative flex items-center justify-center gap-4 px-4 py-2.5">
+        <div className="relative flex items-center justify-center gap-4 px-4 py-1 sm:py-2.5">
           <button
             onClick={prev}
             aria-label="Previous track"
-            className="w-7 h-7 rounded-sm flex items-center justify-center border border-white/12 bg-white/[0.03] text-white/70 hover:text-white hover:border-[#C81E2C]/60 active:scale-95 transition-all"
+            className="w-6 h-6 sm:w-7 sm:h-7 rounded-sm flex items-center justify-center border border-white/12 bg-white/[0.03] text-white/70 hover:text-white hover:border-[#C81E2C]/60 active:scale-95 transition-all"
           >
             <span className="text-xs">⏮</span>
           </button>
@@ -139,7 +135,7 @@ export const AudioControls = () => {
           <button
             onClick={toggle}
             aria-label={isPlaying ? 'Pause' : 'Play'}
-            className="relative w-11 h-11 rounded-full flex items-center justify-center active:scale-95 transition-transform"
+            className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center active:scale-95 transition-transform"
             style={{
               background: 'radial-gradient(circle at 35% 30%, #2a2626 0%, #141212 60%, #0a0808 100%)',
               boxShadow: isPlaying
@@ -153,14 +149,14 @@ export const AudioControls = () => {
           <button
             onClick={next}
             aria-label="Next track"
-            className="w-7 h-7 rounded-sm flex items-center justify-center border border-white/12 bg-white/[0.03] text-white/70 hover:text-white hover:border-[#C81E2C]/60 active:scale-95 transition-all"
+            className="w-6 h-6 sm:w-7 sm:h-7 rounded-sm flex items-center justify-center border border-white/12 bg-white/[0.03] text-white/70 hover:text-white hover:border-[#C81E2C]/60 active:scale-95 transition-all"
           >
             <span className="text-xs">⏭</span>
           </button>
         </div>
 
         {/* Volume */}
-        <div className="relative flex items-center gap-2.5 px-4 pb-3">
+        <div className="relative flex items-center gap-2.5 px-4 pb-1.5 sm:pb-3">
           <button
             onClick={toggleMute}
             aria-label={muted ? 'Unmute' : 'Mute'}
