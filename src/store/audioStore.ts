@@ -111,15 +111,20 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     const SC = (window as any).SC;
     widget.setVolume(get().muted ? 0 : get().volume);
 
+    const applySound = (sound: any, index?: number) => {
+      if (!sound) return;
+      const title = sound.title ?? 'UNTITLED';
+      const next: Partial<AudioStore> = {
+        trackTitle: title,
+        bpm: parseBpmFromTitle(title),
+        duration: sound.duration ?? get().duration,
+      };
+      if (typeof index === 'number') next.currentIndex = index;
+      set(next);
+    };
+
     const syncCurrentSound = () => {
-      widget.getCurrentSound((sound: any) => {
-        if (!sound) return;
-        set({
-          trackTitle: sound.title ?? 'UNTITLED',
-          bpm: parseBpmFromTitle(sound.title),
-          duration: sound.duration ?? 0,
-        });
-      });
+      widget.getCurrentSound((sound: any) => applySound(sound));
       widget.getCurrentSoundIndex((index: number) => set({ currentIndex: index }));
     };
 
@@ -153,6 +158,16 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
           }
         });
         widget.getPosition((pos: number) => set({ position: pos }));
+        // skip()/next()/prev() often play the new track without a second PLAY
+        // event, so the LCD title would stay stuck on the previous sound.
+        widget.getCurrentSound((sound: any) => {
+          if (!sound) return;
+          const title = sound.title ?? 'UNTITLED';
+          if (title !== get().trackTitle) applySound(sound);
+        });
+        widget.getCurrentSoundIndex((index: number) => {
+          if (get().currentIndex !== index) set({ currentIndex: index });
+        });
       }, 500);
     });
 
@@ -195,13 +210,50 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     if (!widget) return;
     isPlaying ? widget.pause() : widget.play();
   },
-  next: () => get().widget?.next(),
-  prev: () => get().widget?.prev(),
+  next: () => {
+    const { widget, sounds, currentIndex } = get();
+    if (!widget) return;
+    const nextIndex = sounds.length ? (currentIndex + 1) % sounds.length : currentIndex + 1;
+    const sound = sounds[nextIndex];
+    if (sound) {
+      set({ currentIndex: nextIndex, trackTitle: sound.title, bpm: parseBpmFromTitle(sound.title) });
+    }
+    widget.next();
+  },
+  prev: () => {
+    const { widget, sounds, currentIndex } = get();
+    if (!widget) return;
+    const prevIndex = sounds.length
+      ? (currentIndex - 1 + sounds.length) % sounds.length
+      : Math.max(0, currentIndex - 1);
+    const sound = sounds[prevIndex];
+    if (sound) {
+      set({ currentIndex: prevIndex, trackTitle: sound.title, bpm: parseBpmFromTitle(sound.title) });
+    }
+    widget.prev();
+  },
   seek: (ms) => get().widget?.seekTo(ms),
   playIndex: (index) => {
-    const { widget } = get();
+    const { widget, sounds } = get();
     if (!widget) return;
+    const sound = sounds[index];
+    if (sound) {
+      set({
+        currentIndex: index,
+        trackTitle: sound.title,
+        bpm: parseBpmFromTitle(sound.title),
+      });
+    }
     widget.skip(index);
     widget.play();
+    widget.getCurrentSound((current: any) => {
+      if (!current) return;
+      set({
+        trackTitle: current.title ?? sound?.title ?? 'UNTITLED',
+        bpm: parseBpmFromTitle(current.title),
+        duration: current.duration ?? 0,
+        currentIndex: index,
+      });
+    });
   },
 }));
