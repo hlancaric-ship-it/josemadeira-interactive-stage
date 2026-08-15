@@ -17,6 +17,9 @@ const parseBpmFromTitle = (title: string | undefined): number | null => {
 
 let pulseRafId: number | null = null;
 let syncIntervalId: number | null = null;
+/** Once the user picks a track, ignore widget metadata — profile embeds
+ * keep reporting sound 0 from getCurrentSound / getCurrentSoundIndex. */
+let selectedIndex: number | null = null;
 
 export interface SCSound {
   id: number;
@@ -111,7 +114,21 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     const SC = (window as any).SC;
     widget.setVolume(get().muted ? 0 : get().volume);
 
+    const titleFromIndex = (index: number) => {
+      const listed = get().sounds[index];
+      if (!listed) return;
+      set({
+        currentIndex: index,
+        trackTitle: listed.title,
+        bpm: parseBpmFromTitle(listed.title),
+      });
+    };
+
     const applySound = (sound: any, index?: number) => {
+      if (selectedIndex !== null) {
+        titleFromIndex(selectedIndex);
+        return;
+      }
       if (!sound) return;
       const title = sound.title ?? 'UNTITLED';
       const next: Partial<AudioStore> = {
@@ -124,6 +141,10 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     };
 
     const syncCurrentSound = () => {
+      if (selectedIndex !== null) {
+        titleFromIndex(selectedIndex);
+        return;
+      }
       widget.getCurrentSound((sound: any) => applySound(sound));
       widget.getCurrentSoundIndex((index: number) => set({ currentIndex: index }));
     };
@@ -133,6 +154,9 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
       syncCurrentSound();
 
       widget.getSounds((sounds: any[]) => {
+        // load(permalink) replaces the widget queue with one track — keep
+        // the original profile list so the discography grid stays intact.
+        if (get().sounds.length > 1 && sounds.length <= 1) return;
         set({
           sounds: sounds.map((s) => ({
             id: s.id,
@@ -158,16 +182,10 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
           }
         });
         widget.getPosition((pos: number) => set({ position: pos }));
-        // skip()/next()/prev() often play the new track without a second PLAY
-        // event, so the LCD title would stay stuck on the previous sound.
-        widget.getCurrentSound((sound: any) => {
-          if (!sound) return;
-          const title = sound.title ?? 'UNTITLED';
-          if (title !== get().trackTitle) applySound(sound);
-        });
-        widget.getCurrentSoundIndex((index: number) => {
-          if (get().currentIndex !== index) set({ currentIndex: index });
-        });
+        if (selectedIndex !== null) {
+          const listed = get().sounds[selectedIndex];
+          if (listed && get().trackTitle !== listed.title) titleFromIndex(selectedIndex);
+        }
       }, 500);
     });
 
@@ -178,7 +196,13 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     });
 
     widget.bind(SC.Widget.Events.PAUSE, () => set({ isPlaying: false }));
-    widget.bind(SC.Widget.Events.FINISH, () => set({ isPlaying: false }));
+    widget.bind(SC.Widget.Events.FINISH, () => {
+      set({ isPlaying: false });
+      const { sounds } = get();
+      if (!sounds.length) return;
+      const from = selectedIndex ?? get().currentIndex;
+      get().playIndex((from + 1) % sounds.length);
+    });
 
     widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e: { currentPosition: number }) => {
       set({ position: e.currentPosition });
@@ -200,6 +224,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
   hardStart: () => {
     const { iframeEl } = get();
     if (!iframeEl) return;
+    selectedIndex = null;
     iframeEl.src = buildWidgetSrc(true);
   },
 
@@ -211,49 +236,33 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     isPlaying ? widget.pause() : widget.play();
   },
   next: () => {
-    const { widget, sounds, currentIndex } = get();
-    if (!widget) return;
-    const nextIndex = sounds.length ? (currentIndex + 1) % sounds.length : currentIndex + 1;
-    const sound = sounds[nextIndex];
-    if (sound) {
-      set({ currentIndex: nextIndex, trackTitle: sound.title, bpm: parseBpmFromTitle(sound.title) });
-    }
-    widget.next();
+    const { sounds, currentIndex } = get();
+    if (!sounds.length) return;
+    get().playIndex((currentIndex + 1) % sounds.length);
   },
   prev: () => {
-    const { widget, sounds, currentIndex } = get();
-    if (!widget) return;
-    const prevIndex = sounds.length
-      ? (currentIndex - 1 + sounds.length) % sounds.length
-      : Math.max(0, currentIndex - 1);
-    const sound = sounds[prevIndex];
-    if (sound) {
-      set({ currentIndex: prevIndex, trackTitle: sound.title, bpm: parseBpmFromTitle(sound.title) });
-    }
-    widget.prev();
+    const { sounds, currentIndex } = get();
+    if (!sounds.length) return;
+    get().playIndex((currentIndex - 1 + sounds.length) % sounds.length);
   },
   seek: (ms) => get().widget?.seekTo(ms),
   playIndex: (index) => {
     const { widget, sounds } = get();
     if (!widget) return;
     const sound = sounds[index];
+    selectedIndex = index;
     if (sound) {
       set({
         currentIndex: index,
         trackTitle: sound.title,
         bpm: parseBpmFromTitle(sound.title),
       });
+      if (sound.permalinkUrl) {
+        widget.load(sound.permalinkUrl, { auto_play: true });
+        return;
+      }
     }
     widget.skip(index);
     widget.play();
-    widget.getCurrentSound((current: any) => {
-      if (!current) return;
-      set({
-        trackTitle: current.title ?? sound?.title ?? 'UNTITLED',
-        bpm: parseBpmFromTitle(current.title),
-        duration: current.duration ?? 0,
-        currentIndex: index,
-      });
-    });
   },
 }));

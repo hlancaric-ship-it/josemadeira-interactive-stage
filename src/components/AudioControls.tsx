@@ -80,7 +80,8 @@ const Waveform = ({ onSeek }: { onSeek: (ratio: number) => void }) => {
 };
 
 export const AudioControls = () => {
-  const { isReady, isPlaying, trackTitle, position, duration, toggle, next, prev, seek, volume, muted, setVolume, toggleMute } = useAudioStore();
+  const { isReady, isPlaying, trackTitle, sounds, currentIndex, position, duration, toggle, next, prev, seek, volume, muted, setVolume, toggleMute } = useAudioStore();
+  const displayTitle = sounds[currentIndex]?.title ?? trackTitle;
   const { lang } = useLangStore();
   const t = translations[lang];
 
@@ -105,7 +106,7 @@ export const AudioControls = () => {
               <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-[#C81E2C] animate-pulse shadow-[0_0_6px_#C81E2C]' : 'bg-white/25'}`} />
               {isReady ? (isPlaying ? t.player.live : t.player.paused) : t.player.connecting}
             </div>
-            <div className="truncate font-semibold tracking-tight text-[12px] text-white">{trackTitle}</div>
+            <div className="truncate font-semibold tracking-tight text-[12px] text-white">{displayTitle}</div>
           </div>
         </div>
 
