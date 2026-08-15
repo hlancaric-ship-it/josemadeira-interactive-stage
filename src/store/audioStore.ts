@@ -15,6 +15,7 @@ const parseBpmFromTitle = (title: string | undefined): number => {
 };
 
 let pulseRafId: number | null = null;
+let syncIntervalId: number | null = null;
 
 export interface SCSound {
   id: number;
@@ -136,6 +137,22 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
           })),
         });
       });
+
+      // hardStart() reloads the iframe with auto_play=true, which can start
+      // playing (and fire its one-shot PLAY event) before this widget finishes
+      // binding — missing that broadcast left isPlaying/position stuck forever.
+      // Poll the real state directly as a self-healing fallback.
+      if (syncIntervalId) clearInterval(syncIntervalId);
+      syncIntervalId = window.setInterval(() => {
+        widget.isPaused((paused: boolean) => {
+          const playing = !paused;
+          if (get().isPlaying !== playing) {
+            set({ isPlaying: playing });
+            if (playing) startPulseLoop(get, set);
+          }
+        });
+        widget.getPosition((pos: number) => set({ position: pos }));
+      }, 500);
     });
 
     widget.bind(SC.Widget.Events.PLAY, () => {
