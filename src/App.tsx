@@ -10,7 +10,6 @@ import { LiveBanner } from './components/LiveBanner';
 import { GallerySection } from './components/GallerySection';
 import { HorizontalStage } from './components/HorizontalStage';
 import { GlowLogo } from './components/GlowLogo';
-import { Hero } from './components/Hero';
 import { Preloader } from './components/Preloader';
 import { GlitchOverlay } from './components/GlitchOverlay';
 import { AudioControls } from './components/AudioControls';
@@ -576,7 +575,6 @@ const MainStage = () => {
 };
 
 export default function App() {
-  const [loaded, setLoaded] = useState(false);
   const [entered, setEntered] = useState(false);
   const consent = useCookieConsentStore((s) => s.consent);
 
@@ -586,13 +584,7 @@ export default function App() {
       <CookieConsent />
 
       <AnimatePresence>
-        {!loaded && <Preloader onDone={() => setLoaded(true)} />}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {loaded && !entered && (
-          <Hero onEnter={() => setEntered(true)} />
-        )}
+        {!entered && <Preloader onDone={() => setEntered(true)} />}
       </AnimatePresence>
 
       {entered && <MainStage />}

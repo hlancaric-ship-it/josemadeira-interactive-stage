@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useAudioStore } from '../store/audioStore';
+import { useLangStore } from '../store/langStore';
+import { translations } from '../i18n/translations';
 import joseAvatar from '../assets/jose-avatar.jpg';
 
 const Coin = () => (
@@ -15,6 +18,10 @@ const Coin = () => (
 
 export const Preloader = ({ onDone }: { onDone: () => void }) => {
   const [progress, setProgress] = useState(0);
+  const [ready, setReady] = useState(false);
+  const hardStart = useAudioStore((s) => s.hardStart);
+  const { lang } = useLangStore();
+  const t = translations[lang];
 
   useEffect(() => {
     let raf: number;
@@ -35,7 +42,7 @@ export const Preloader = ({ onDone }: { onDone: () => void }) => {
       if (p >= 99.3) {
         setProgress(100);
         window.removeEventListener('load', onLoad);
-        setTimeout(onDone, 450);
+        setReady(true);
         return;
       }
       setProgress(p);
@@ -47,7 +54,12 @@ export const Preloader = ({ onDone }: { onDone: () => void }) => {
       window.removeEventListener('load', onLoad);
       cancelAnimationFrame(raf);
     };
-  }, [onDone]);
+  }, []);
+
+  const handleEnter = () => {
+    hardStart();
+    onDone();
+  };
 
   return (
     <motion.div
@@ -75,9 +87,21 @@ export const Preloader = ({ onDone }: { onDone: () => void }) => {
         </div>
       </motion.div>
 
-      <div className="mt-12 mono text-xs tracking-[4px] text-white/50 tabular-nums">
-        LOADING {Math.round(progress)}%
-      </div>
+      {!ready ? (
+        <div className="mt-12 mono text-xs tracking-[4px] text-white/50 tabular-nums">
+          LOADING {Math.round(progress)}%
+        </div>
+      ) : (
+        <motion.button
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          onClick={handleEnter}
+          className="mt-12 px-10 sm:px-12 py-4 sm:py-[19px] bg-[#C81E2C] text-white text-sm mono tracking-[3px] uppercase font-bold hover:bg-[#A91824] active:scale-[0.985] transition-all shadow-[0_10px_30px_rgba(200,30,44,0.35)]"
+        >
+          {t.enterVibe}
+        </motion.button>
+      )}
     </motion.div>
   );
 };
